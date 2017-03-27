@@ -8,11 +8,15 @@ app.set('port', process.env.PORT || 3000 );
 
 var clients = [];
 
+
 io.on("connection", function(socket)
 {
 	var currentUser;
 	var playerspeed = 4.0;
-	var deltatime = 0.1;
+	var deltatime = 0.1
+
+	var time;
+	var deltatime;
 
 	socket.on("USER_CONNECT",function()
 	{
@@ -47,9 +51,9 @@ io.on("connection", function(socket)
 
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
 
-			var x = parseInt(pos[0]) + (parseInt(dir[0]) * playerspeed * deltatime);
-			var y = parseInt(pos[1]) + (parseInt(dir[1]) * playerspeed * deltatime);
-			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed * deltatime);
+			var x = parseInt(pos[0]) + ((parseInt(dir[0]) * playerspeed * deltatime));
+			var y = parseInt(pos[1]) + ((parseInt(dir[1]) * playerspeed * deltatime));
+			var z = parseInt(pos[2]) + ((parseInt(dir[2]) * playerspeed * deltatime));
 
 			var newPos = x+","+y+","+z;
 			console.log("[DEBUG]"+currentUser.name+" newPos: "+newPos);
