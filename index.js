@@ -69,7 +69,7 @@ io.on("connection", function(socket)
 			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
 			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
 			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
-			var newPos = x+","+y+","+z;
+			var newPos = x +","+ y +","+ z;
 			console.log("[DEBUG "+debugIndex+"][4]"+currentUser.name+" newPos: "+newPos);debugIndex++;
 			currentUser.position = newPos;
 			//console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
