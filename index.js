@@ -7,13 +7,6 @@ var io = require('socket.io').listen(server);
 
 app.set('port', 3000 );
 app.use(express.static(path.join(__dirname, 'public')));
-//http.createServer(app).listen(80);
-//app.use('/', express.static(__dirname + '/test'));
-//app.listen(3000, function() { console.log('listening')});
-//app.listen(80);
-//app.use(express.static(__dirname + "/../public"));
-//app.use(express.static('public'));
-//http.createServer(app).listen(80);
 
 var clients = [];
 
@@ -45,6 +38,7 @@ io.on("connection", function(socket)
 			currentUser = 
 			{
 				name: data.name,
+				input: data.input,
 				position: data.position
 			}
 			clients.push(currentUser);
