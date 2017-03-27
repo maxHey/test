@@ -44,6 +44,8 @@ io.on("connection", function(socket)
 			var pos = currentUser.position.split(",");
 			var dir = data.movdir.split(",");
 
+			console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
+
 			var x = parseInt(pos[0]) + (parseInt(dir[0]) * playerspeed);
 			var y = parseInt(pos[1]) + (parseInt(dir[1]) * playerspeed);
 			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed);
