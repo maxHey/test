@@ -1,13 +1,13 @@
 var express = require('express');
-var https = require('https');
-var http = require('http');
 var app = express();
 var path = require('path');
+var https = require('https');
+var http = require('http');
 
-var server = require('http').createServer(app);
+var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
-app.set('port', process.env.PORT || 3000 );
+app.set('port', process.env.PORT || 80 );
 //app.listen(8080);
 //app.use(express.static(__dirname + "/../public"));
 app.use(express.static('public'));
@@ -96,5 +96,5 @@ io.on("connection", function(socket)
 
 server.listen(app.get('port'), function ()
 {
-	console.log("-----------SERVER RUNNING - PORT: 3000 - Version:"+version+"----------");
+	console.log("-----------SERVER RUNNING - Version:"+version+"----------");
 });
