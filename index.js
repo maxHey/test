@@ -8,7 +8,7 @@ var io = require('socket.io').listen(server);
 app.set('port', process.env.PORT || 3000 );
 
 //app.use('/', express.static(__dirname + '/test'));
-app.use(express.static('/public'));
+server.use(express.static('/public'));
 //app.listen(3000, function() { console.log('listening')});
 //app.listen(80);
 //app.use(express.static(__dirname + "/../public"));
