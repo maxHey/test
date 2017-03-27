@@ -11,6 +11,7 @@ var clients = [];
 io.on("connection", function(socket)
 {
 	var currentUser;
+	var playerspeed = 4;
 
 	socket.on("USER_CONNECT",function()
 	{
@@ -40,7 +41,7 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
-			currentUser.position = data.position;
+			currentUser.position += data.direction * playerspeed;
 
 			socket.emit("MOVE",currentUser);
 			socket.broadcast.emit("MOVE",currentUser);
