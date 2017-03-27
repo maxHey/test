@@ -46,6 +46,8 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
+			console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
+			console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
 			var pos = currentUser.position.split(",");
 			var dir = data.movdir.split(",");
 
@@ -56,7 +58,7 @@ io.on("connection", function(socket)
 			var z = parseInt(pos[2]) + ((parseInt(dir[2]) * playerspeed * deltatime));
 
 			var newPos = x+","+y+","+z;
-			console.log("[DEBUG]"+currentUser.name+" newPos: "+newPos);
+			console.log("[DEBUG][2]"+currentUser.name+" newPos: "+newPos);
 
 			currentUser.position = newPos;
 
