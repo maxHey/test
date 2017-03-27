@@ -6,10 +6,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
 app.set('port', 3000 );
-app.use(express.static('/public'),function ()
-{
-	console.log("-----------SERVER RUNNING - Version:"+version+"----------");
-});
+app.use(express.static(path.join(__dirname, 'public')));
 //http.createServer(app).listen(80);
 //app.use('/', express.static(__dirname + '/test'));
 //app.listen(3000, function() { console.log('listening')});
