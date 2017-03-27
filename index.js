@@ -12,6 +12,7 @@ io.on("connection", function(socket)
 {
 	var currentUser;
 	var playerspeed = 4.0;
+	var deltatime = 0.05;
 
 	socket.on("USER_CONNECT",function()
 	{
@@ -44,11 +45,11 @@ io.on("connection", function(socket)
 			var pos = currentUser.position.split(",");
 			var dir = data.movdir.split(",");
 
-			console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
+			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
 
-			var x = parseInt(pos[0]) + (parseInt(dir[0]) * playerspeed);
-			var y = parseInt(pos[1]) + (parseInt(dir[1]) * playerspeed);
-			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed);
+			var x = parseInt(pos[0]) + (parseInt(dir[0]) * playerspeed * deltatime);
+			var y = parseInt(pos[1]) + (parseInt(dir[1]) * playerspeed * deltatime);
+			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed * deltatime);
 
 			var newPos = x+","+y+","+z;
 
@@ -56,7 +57,7 @@ io.on("connection", function(socket)
 
 			socket.emit("MOVE",currentUser);
 			socket.broadcast.emit("MOVE",currentUser);
-			console.log(currentUser.name+" move to "+currentUser.position);
+			//console.log(currentUser.name+" move to "+currentUser.position);
 	});
 
 	socket.on("disconnect", function()
