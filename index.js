@@ -5,7 +5,7 @@ var path = require('path');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
-app.set('port', process.env.PORT || 80 );
+app.set('port', process.env.PORT || 3000 );
 //app.listen(80);
 //app.use(express.static(__dirname + "/../public"));
 //app.use(express.static('public'));
