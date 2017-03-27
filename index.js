@@ -4,7 +4,9 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 
-app.set('port', process.env.PORT || 80 );
+var usedPort = 80;
+
+app.set('port', process.env.PORT || usedPort );
 
 var clients = [];
 
@@ -66,5 +68,5 @@ io.on("connection", function(socket)
 
 server.listen(app.get('port'), function ()
 {
-	console.log("-----------SERVER IS RUNNING----------");
+	console.log("-----------SERVER IS RUNNING ON PORT: "+usedPort+",process.env.PORT: "+process.env.PORT+"----------");
 });
