@@ -53,9 +53,9 @@ io.on("connection", function(socket)
 
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
 
-			var x = parseInt(pos[0]) + ((parseInt(dir[0]) * playerspeed * deltatime));
-			var y = parseInt(pos[1]) + ((parseInt(dir[1]) * playerspeed * deltatime));
-			var z = parseInt(pos[2]) + ((parseInt(dir[2]) * playerspeed * deltatime));
+			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
+			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
+			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
 
 			var newPos = x+","+y+","+z;
 			console.log("[DEBUG][2]"+currentUser.name+" newPos: "+newPos);
