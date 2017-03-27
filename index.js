@@ -44,11 +44,11 @@ io.on("connection", function(socket)
 			var pos = currentUser.position.split(",");
 			var dir = data.movdir.split(",");
 
-			var x = pos[0] + (dir[0] * playerspeed);
-			var y = pos[1] + (dir[1] * playerspeed);
-			var z = pos[2] + (dir[2] * playerspeed);
+			var x = parseInt(pos[0]) + (parseInt(dir[0]) * playerspeed);
+			var y = parseInt(pos[1]) + (parseInt(dir[1]) * playerspeed);
+			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed);
 
-			var newPos = x +","+y+","+z;
+			var newPos = x+","+y+","+z;
 
 			currentUser.position = newPos;
 
