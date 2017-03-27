@@ -41,7 +41,16 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
-			currentUser.position = currentUser.position + ( data.movdir * playerspeed );
+			var pos = currentUser.position.split(",");
+			var dir = data.movdir.split(",");
+
+			var x = currentUser.position[0] + (data.movdir[0] * playerspeed);
+			var y = currentUser.position[1] + (data.movdir[1] * playerspeed);
+			var z = currentUser.position[2] + (data.movdir[2] * playerspeed);
+
+			var newPos = x +","+y+","+z;
+
+			currentUser.position = newPos;
 
 			socket.emit("MOVE",currentUser);
 			socket.broadcast.emit("MOVE",currentUser);
