@@ -61,6 +61,9 @@ io.on("connection", function(socket)
 			var dir = input.split(",");
 			console.log("[DEBUG][3] dir: "+dir);
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
+			console.log("[DEBUG][3.1] dir[0]: "+dir[0]);
+			console.log("[DEBUG][3.2] parseFloat(dir[0]):"+parseFloat(dir[0]));
+			console.log("[DEBUG][3.3] parseFloat(pos[0]):"+parseFloat(pos[0]));
 			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
 			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
 			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
