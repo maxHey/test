@@ -52,12 +52,14 @@ io.on("connection", function(socket)
 			var z = parseInt(pos[2]) + (parseInt(dir[2]) * playerspeed * deltatime);
 
 			var newPos = x+","+y+","+z;
+			console.log("[DEBUG]"+currentUser.name+" newPos: "+newPos);
 
 			currentUser.position = newPos;
 
 			socket.emit("MOVE",currentUser);
 			socket.broadcast.emit("MOVE",currentUser);
-			//console.log(currentUser.name+" move to "+currentUser.position);
+
+			console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
 	});
 
 	socket.on("disconnect", function()
