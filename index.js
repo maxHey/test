@@ -1,4 +1,6 @@
 var express = require('express');
+var https = require('https');
+var http = require('http');
 var app = express();
 var path = require('path');
 
@@ -7,9 +9,8 @@ var io = require('socket.io').listen(server);
 
 app.set('port', process.env.PORT || 3000 );
 //app.listen(8080);
-app.use(express.static(__dirname + "/../public"));
-
-app.listen(8080);
+//app.use(express.static(__dirname + "/../public"));
+http.createServer(app).listen(80);
 
 var clients = [];
 
