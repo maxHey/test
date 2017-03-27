@@ -12,7 +12,7 @@ io.on("connection", function(socket)
 {
 	var currentUser;
 	var playerspeed = 4.0;
-	var deltatime = 0.05;
+	var deltatime = 0.1;
 
 	socket.on("USER_CONNECT",function()
 	{
