@@ -80,20 +80,18 @@ io.on("connection", function(socket)
 		};
 	});
 
+	function mainLoop()
+	{
+		for( var i = 0 ; i < clients.length ; i++ )
+		{
+			socket.emit("MOVE",clients[i]);
+		}
+	}
+	setInterval( mainLoop , 16);
+
 });
 
 server.listen(app.get('port'), function ()
 {
 	console.log("-----------SERVER IS RUNNING ON PORT: 3000,process.env.PORT: "+process.env.PORT+"----------");
 });
-
-
-function mainLoop()
-{
-	for( var i = 0 ; i < clients.length ; i++ )
-	{
-		socket.emit("MOVE",clients[i]);
-	}
-}
-
-setInterval( mainLoop , 16);
