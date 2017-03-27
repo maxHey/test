@@ -10,7 +10,8 @@ var io = require('socket.io').listen(server);
 app.set('port', process.env.PORT || 3000 );
 //app.listen(8080);
 //app.use(express.static(__dirname + "/../public"));
-http.createServer(app).listen(80);
+app.use(express.static('public'));
+//http.createServer(app).listen(80);
 
 var clients = [];
 
