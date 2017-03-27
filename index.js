@@ -46,23 +46,18 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
-			console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
-			console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
+			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
+			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
 			var pos = currentUser.position.split(",");
 			var dir = data.movdir.split(",");
-
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
-
 			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
 			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
 			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
-
 			var newPos = x+","+y+","+z;
-			console.log("[DEBUG][2]"+currentUser.name+" newPos: "+newPos);
-
+			//console.log("[DEBUG][2]"+currentUser.name+" newPos: "+newPos);
 			currentUser.position = newPos;
-
-			console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
+			//console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
 	});
 
 	socket.on("disconnect", function()
