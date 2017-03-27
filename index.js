@@ -9,10 +9,7 @@ app.set('port', process.env.PORT || 3000 );
 //app.listen(8080);
 app.use(express.static(__dirname + "/../public"));
 
-app.listen = function() {
-  var server = http.createServer(this);
-  return server.listen.apply(server, arguments);
-};
+app.listen(3000);
 
 var clients = [];
 
