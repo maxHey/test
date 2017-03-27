@@ -53,8 +53,12 @@ io.on("connection", function(socket)
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
 			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
 			var pos = currentUser.position.split(",");
-			var movdir = data.movdir.substring(1, data.movdir.length-1);
+
+			console.log("[DEBUG][1] data.movdir: "+data.movdir);
+			var movdir = data.movdir.slice(1, -1);
+			console.log("[DEBUG][2] movdir: "+movdir);
 			var dir = movdir.split(",");
+			console.log("[DEBUG][3] dir: "+dir);
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
 			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
 			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
