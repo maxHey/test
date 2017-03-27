@@ -38,8 +38,8 @@ io.on("connection", function(socket)
 			currentUser = 
 			{
 				name: data.name,
-				input: data.input,
-				position: data.position
+				position: data.position,
+				input: data.input
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
@@ -55,9 +55,9 @@ io.on("connection", function(socket)
 			var pos = currentUser.position.split(",");
 
 			console.log("[DEBUG][1] data.movdir: "+data.movdir);
-			var movdir = data.movdir.slice(1, -1);
-			console.log("[DEBUG][2] movdir: "+movdir);
-			var dir = movdir.split(",");
+			var input = data.input.slice(1, -1);
+			console.log("[DEBUG][2] input: "+input);
+			var dir = input.split(",");
 			console.log("[DEBUG][3] dir: "+dir);
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
 			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
