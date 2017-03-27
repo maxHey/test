@@ -52,7 +52,7 @@ io.on("connection", function(socket)
 	{
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
 			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
-			var pos = currentUser.position.split(",");
+			var pos = currentUser.position.slice(1, -1).split(",");
 			console.log("[DEBUG][2]"+currentUser.name+" pos: "+pos);
 
 			//console.log("[DEBUG][1] data.movdir: "+data.movdir);
