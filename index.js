@@ -8,6 +8,7 @@ app.set('port', process.env.PORT || 3000 );
 
 var clients = [];
 
+var version = "27-03-2017-0000001";
 
 io.on("connection", function(socket)
 {
@@ -88,5 +89,5 @@ io.on("connection", function(socket)
 
 server.listen(app.get('port'), function ()
 {
-	console.log("-----------SERVER IS RUNNING ON PORT: 3000,process.env.PORT: "+process.env.PORT+"----------");
+	console.log("-----------SERVER RUNNING - PORT: 3000 - Version:"+version+"----------");
 });
