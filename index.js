@@ -53,10 +53,11 @@ io.on("connection", function(socket)
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
 			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
 			var pos = currentUser.position.split(",");
+			console.log("[DEBUG][2]"+currentUser.name+" pos: "+pos);
 
-			console.log("[DEBUG][1] data.movdir: "+data.movdir);
+			//console.log("[DEBUG][1] data.movdir: "+data.movdir);
 			var input = data.input.slice(1, -1);
-			console.log("[DEBUG][2] input: "+input);
+			//console.log("[DEBUG][2] input: "+input);
 			var dir = input.split(",");
 			console.log("[DEBUG][3] dir: "+dir);
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
@@ -64,7 +65,7 @@ io.on("connection", function(socket)
 			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
 			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
 			var newPos = x+","+y+","+z;
-			//console.log("[DEBUG][2]"+currentUser.name+" newPos: "+newPos);
+			console.log("[DEBUG][4]"+currentUser.name+" newPos: "+newPos);
 			currentUser.position = newPos;
 			//console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
 	});
