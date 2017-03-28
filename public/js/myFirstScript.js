@@ -369,10 +369,10 @@ socket.on("MOVE",function(data){
 
     console.log("Attempt player move!");
     console.log("[CLIENT][MOVE] to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
-
-    player.mesh.translateX( data.x );
-    player.mesh.translateY( data.y );
-    player.mesh.translateZ( data.z );
+    player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+    //player.mesh.translateX( data.x );
+    //player.mesh.translateY( data.y );
+    //player.mesh.translateZ( data.z );
     //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
 });
 
