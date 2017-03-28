@@ -26,7 +26,13 @@ io.on("connection", function(socket)
 	socket.on("USER_CONNECT",function(data)
 	{
 		console.log("User connected");
-		currentUser = data;
+		
+		currentUser = 
+		{
+			name: data.name,
+			position: data.position,
+			input: data.input
+		}
 		clients.push(currentUser);
 		socket.emit("USER_CONNECTED",currentUser);
 
