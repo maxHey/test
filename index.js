@@ -58,7 +58,7 @@ io.on("connection", function(socket)
 			//console.log("[DEBUG "+debugIndex+"][2]"+currentUser.name+" pos: "+pos); debugIndex++;
 
 			//console.log("[DEBUG][1] data.movdir: "+data.movdir);
-			var input = data.input;
+			var input = data;
 			//console.log("[DEBUG][2] input: "+input);
 			//console.log("[DEBUG "+debugIndex+"][3] dir: "+dir);debugIndex++;
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
@@ -99,7 +99,7 @@ io.on("connection", function(socket)
 	{
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
-			socket.emit("MOVE",clients[i]);
+			socket.emit("MOVE",clients[i].position);
 		}
 	}
 	setInterval( mainLoop , 16);

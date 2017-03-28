@@ -74,27 +74,35 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
+        var input = {x: 0, y:0, z:0};
 
         if ( keyboard.pressed("W") || keyboard.down("up"))
         {
-            player.mesh.translateZ( -moveDistance );
+            input.z = 1;
+            //player.mesh.translateZ( -moveDistance );
         }
         if ( keyboard.pressed("S") || keyboard.down("down") )
         {
 
-            player.mesh.translateZ( moveDistance );
+            //player.mesh.translateZ( moveDistance );
+            input.z = -1;
         }
 
         if ( keyboard.pressed("D") || keyboard.down("right") )
         {
-            player.mesh.translateX( moveDistance );
+            //player.mesh.translateX( moveDistance );
+            input.x = 1;
         }
         if ( keyboard.pressed("A") || keyboard.down("left") )
         {
-            player.mesh.translateX(  -moveDistance );
+            //player.mesh.translateX(  -moveDistance );
+            input.x = -1;
         }
 
         player.position = player.mesh.position;
+
+        thisUser.input= input;
+        socket.emit("MOVE",input);
     }
 }
 
@@ -354,7 +362,7 @@ socket.on("PLAY",function(data){
 });
 
 socket.on("MOVE",function(data){
-
+    player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
 });
 
 socket.on('disconnect', function(data)
