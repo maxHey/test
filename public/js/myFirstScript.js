@@ -328,9 +328,20 @@ socket = io.connect();
 socket.on('connect', function(data) 
 {
     // Respond with a message including this clients' id sent from the server
-    socket.emit("user connected");
+    socket.emit('USER_CONNECT');
+    console.log("attempt connection");
+});
 
+socket.on('USER_CONNECTED', function(data) 
+{
     console.log("Socket connected");
+});
+
+socket.on('disconnect', function(data) 
+{
+    // Respond with a message including this clients' id sent from the server
+    socket.emit('USER_DISCONNECTED');
+    console.log("Socket disconnected");
 });
 
 socket.on('time', function(data) 
@@ -340,13 +351,3 @@ socket.on('time', function(data)
 
 socket.on('error', console.error.bind(console));
 socket.on('message', console.log.bind(console));
-
-function addMessage(message) 
-{
-    var text = document.createTextNode(message),
-        el = document.createElement('li'),
-        messages = document.getElementById('messages');
-
-    el.appendChild(text);
-    messages.appendChild(el);
-}
