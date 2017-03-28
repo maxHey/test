@@ -27,27 +27,29 @@ io.on("connection", function(socket)
 	{
 		console.log("User connected");
 
+		currentUser = 
+		{
+			name: data.name,
+			position: data.position,
+			input: data.input
+		}
+		clients.push(currentUser);
+		console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
+
+		socket.emit("PLAY", currentUser);
+		socket.broadcast.emit("USER_CONNECTED",currentUser);
+		/*
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
 			socket.emit("USER_CONNECTED", { name:clients[i].name , position:clients[i].position });
 			console.log("User: "+clients[i].name+ " is connected! There are now "+clients.length+" Users online!");
 		}
-
+		*/
 	 });
 
 	socket.on("PLAY", function( data )
 	{
-			currentUser = 
-			{
-				name: data.name,
-				position: data.position,
-				input: data.input
-			}
-			clients.push(currentUser);
-			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
-
-			socket.emit("PLAY", currentUser);
-			socket.broadcast.emit("USER_CONNECTED",currentUser);
+		
 	});
 
 	socket.on("MOVE", function( data ) 
