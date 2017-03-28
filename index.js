@@ -14,6 +14,8 @@ var version = "27-03-2017-0000001";
 
 io.on("connection", function(socket)
 {
+  	console.log('a user connected');
+
 	var currentUser;
 	var playerspeed = 4.0;
 	var deltatime = 0.03
@@ -78,6 +80,7 @@ io.on("connection", function(socket)
 	socket.on("disconnect", function()
 	{
 		socket.broadcast.emit("USER_DISCONNECTED", currentUser );
+		console.log("a user disconnected! There are now "+clients.length+" Users online!");
 
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
