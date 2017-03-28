@@ -327,7 +327,7 @@ socket = io.connect();
 
 socket.on('connect', function(data) 
 {
-    var thisUser {
+    var thisUser ={
         name: "unnamed",
         position: 0 +","+ 0 ","+ 0,
         input: 0 +","+ 0 ","+ 0
