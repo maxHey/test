@@ -3,7 +3,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 var scene;
 
 //***************************************************************************************************************************** System
-//************************************************************************* INIT
+//****************************************************************************************************** INIT
 function init() {
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -23,18 +23,20 @@ function init() {
     SetupFPSStats();
     //
     window.addEventListener( 'resize', onWindowResize, false );
+    //
+    SpawnPlayer();
 }
 
-//************************************************************************* Animate
+//****************************************************************************************************** Animate
 function animate() {
 
     requestAnimationFrame( animate );
-
+    handleInput();
     render();
     stats.update();
 }
 
-//************************************************************************* Render
+//****************************************************************************************************** Render
 function render() {
 
     var timer = 0.0001 * Date.now();
@@ -43,7 +45,83 @@ function render() {
 }
 
 //***************************************************************************************************************************** METHODS
-//************************************************************************* GRID
+
+//****************************************************************************************************** TEMPLATE
+//************************* VARIABLES
+var myVar;
+//************************* METHODS
+//*************** METHODNAME
+// >> DEPENDENCIES:
+function doSomething()
+{
+    //do something..
+}
+
+//****************************************************************************************************** INPUT
+//************************* VARIABLES
+var clock = new THREE.Clock();
+var keyboard = new KeyboardState();
+//************************* METHODS
+//*************** METHODNAME
+// >> DEPENDENCIES:
+function handleInput()
+{
+    if( keyboard)
+    {
+        keyboard.update();
+        var moveDistance = 100 * clock.getDelta(); 
+
+        if ( keyboard.pressed("W") || keyboard.down("up"))
+        {
+            player.mesh.translateZ( -moveDistance );
+        }
+        if ( keyboard.pressed("S") || keyboard.down("down") )
+        {
+
+            player.mesh.translateZ( moveDistance );
+        }
+
+        if ( keyboard.pressed("D") || keyboard.down("right") )
+        {
+            player.mesh.translateX( moveDistance );
+        }
+        if ( keyboard.pressed("A") || keyboard.down("left") )
+        {
+            player.mesh.translateX(  -moveDistance );
+        }
+
+        player.position = player.mesh.position;
+    }
+}
+
+
+//****************************************************************************************************** PLAYER (added 28-13-17 15:16)
+//************************* VARIABLES
+var players = [];
+var player = {};
+//************************* METHODS
+//*************** METHODNAME
+// >> DEPENDENCIES: geometry, materials
+function SpawnPlayer()
+{
+    //do something..
+    player.position = new THREE.Vector3( 0, 0, 0 );
+    player.geometry = geometry.sphere;
+    player.material = materials.wireframe;
+    player.mesh = new THREE.Mesh( player.geometry, player.material );
+    player.velocity = new THREE.Vector3( 0, 0, 0 );
+    player.input = new THREE.Vector3( 0, 0, 0 );
+    player.name = "unnamed player";
+
+    players.push(player);
+    //
+    player.mesh.position = player.position;
+    //
+    objects.push( player.mesh );
+    scene.add( player.mesh );
+}
+
+//****************************************************************************************************** GRID
 //************************* VARIABLES
 
 //************************* METHODS
@@ -66,7 +144,7 @@ function drawGrid()
     scene.add( line );
 }
 
-//************************************************************************* CAMERA
+//****************************************************************************************************** CAMERA
 //************************* VARIABLES
 var camera;
 var camPos = { x: 0, y: 600, z: 0 };
@@ -80,7 +158,7 @@ function SetUpCamera()
     camera.position.set( camPos.x , camPos.y , camPos.z );
 }
 
-//************************************************************************* LIGHTS
+//****************************************************************************************************** LIGHTS
 //************************* VARIABLES
 var dirLightPos = { x: 0, y: 1000, z: 0 };
 //var particleLight;
@@ -101,7 +179,7 @@ function SetUpLights()
     scene.add( directionalLight );
 }
 
-//************************************************************************* TEXTURES
+//****************************************************************************************************** TEXTURES
 //************************* VARIABLES
 var textures = {};
 //************************* METHODS
@@ -140,7 +218,7 @@ function generateTexture() {
     return canvas;
 }
 
-//************************************************************************* MATERIALS
+//****************************************************************************************************** MATERIALS
 //************************* VARIABLES
 var materials = {};
 //************************* METHODS
@@ -153,7 +231,7 @@ function SetupMaterials()
     materials.wireframe = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
     materials.additive = new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) ;
 }
-//************************************************************************* OBJECTS & GEOMETRY
+//****************************************************************************************************** OBJECTS & GEOMETRY
 //************************* VARIABLES
 // Dictionaries
 var objects = [];
@@ -197,7 +275,7 @@ function addMesh( geometry, material ) {
     scene.add( mesh );
 }
 
-//************************************************************************* RENDERER
+//****************************************************************************************************** RENDERER
 //************************* VARIABLES
 var renderer;
 //************************* METHODS
@@ -210,7 +288,7 @@ function SetupRenderer()
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-//************************************************************************* FPS STATS
+//****************************************************************************************************** FPS STATS
 //************************* VARIABLES
 var container;
 var stats;
@@ -235,3 +313,40 @@ function onWindowResize() {
 //***************************************************************************************************************************** EXECUTING
 init();
 animate();
+
+
+
+
+
+
+//***************************************************************************************************************************** SOCKET
+var socket = io();
+
+// Immediately start connecting
+socket = io.connect();
+
+socket.on('connect', function(data) 
+{
+    // Respond with a message including this clients' id sent from the server
+    socket.emit("user connected");
+
+    console.log("Socket connected");
+});
+
+socket.on('time', function(data) 
+{
+    addMessage(data.time);
+});
+
+socket.on('error', console.error.bind(console));
+socket.on('message', console.log.bind(console));
+
+function addMessage(message) 
+{
+    var text = document.createTextNode(message),
+        el = document.createElement('li'),
+        messages = document.getElementById('messages');
+
+    el.appendChild(text);
+    messages.appendChild(el);
+}
