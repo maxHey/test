@@ -1,6 +1,6 @@
-var phaser = require('phaser');
+varequire('phaser');
 
-var game = new Phaser.Game(800, 600, phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
 	game.load.image('sky', '../assets/sky.png');
@@ -13,7 +13,7 @@ var player;
 
 function create() {
 	//  We're going to be using physics, so enable the Arcade Physics system
-	game.physics.startSystem(phaser.Physics.ARCADE);
+	game.physics.startSystem(Phaser.Physics.ARCADE);
 	//  A simple background for our game
 	game.add.sprite(0, 0, 'sky');
 	//  The platforms group contains the ground and the 2 ledges we can jump on
