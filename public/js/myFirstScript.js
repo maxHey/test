@@ -40,7 +40,12 @@ function animate() {
 function render() {
 
     var timer = 0.0001 * Date.now();
-    camera.lookAt( scene.position );
+    var x = player.position.x + camOffset.x;
+    var y = player.position.y + camOffset.y;
+    var z = player.position.z + camOffset.z;
+    camera.position.set( x , y , z );
+    camera.lookAt( player.position );
+
     renderer.render( scene, camera );
 }
 
@@ -147,7 +152,8 @@ function drawGrid()
 //****************************************************************************************************** CAMERA
 //************************* VARIABLES
 var camera;
-var camPos = { x: 0, y: 600, z: 0 };
+var camSpawn = { x: 0, y: 600, z: 0 };
+var camOffset;
 //************************* METHODS
 //*************** SETUP
 // >> DEPENDENCIES: 
@@ -155,7 +161,8 @@ function SetUpCamera()
 {
     //*************** CAMERA
     camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.set( camPos.x , camPos.y , camPos.z );
+    camOffset = new THREE.Vector3( camSpawn.x , camSpawn.y , camSpawn.z );
+    camera.position.set( camOffset.x , camOffset.y , camOffset.z );
 }
 
 //****************************************************************************************************** LIGHTS
@@ -328,8 +335,8 @@ socket = io.connect();
 socket.on('connect', function(data) 
 {
     thisUser.name = "unnamed";
-    thisUser.position = 0 +","+ 0 +","+ 0;
-    thisUser.input = 0 +","+ 0 +","+ 0;
+    thisUser.position= {x: 0, y:0, z:0};
+    thisUser.input= {x: 0, y:0, z:0};
     // Respond with a message including this clients' id sent from the server
     socket.emit('USER_CONNECT', thisUser );
 

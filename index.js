@@ -77,9 +77,8 @@ io.on("connection", function(socket)
 
 	socket.on("disconnect", function()
 	{
+		console.log("a user disconnected!");
 		socket.broadcast.emit("USER_DISCONNECTED", currentUser );
-
-		console.log("a user disconnected! There are now "+clients.length+" Users online!");
 
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
