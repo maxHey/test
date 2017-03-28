@@ -26,7 +26,7 @@ io.on("connection", function(socket)
 	socket.on("USER_CONNECT",function()
 	{
 		console.log("User connected");
-		socket.broadcast.emit("USER_CONNECTED");
+		socket.broadcast.emit("USER_CONNECTED",currentUser);
 
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
