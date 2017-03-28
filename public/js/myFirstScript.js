@@ -339,8 +339,7 @@ socket.on('USER_CONNECTED', function(data)
 socket.on('disconnect', function(data) 
 {
     // Respond with a message including this clients' id sent from the server
-    socket.emit('USER_DISCONNECTED');
-    console.log("Socket disconnected");
+    //socket.emit('USER_DISCONNECTED');
 });
 
 socket.on('time', function(data) 

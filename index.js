@@ -26,7 +26,8 @@ io.on("connection", function(socket)
 	socket.on("USER_CONNECT",function()
 	{
 		console.log("User connected");
-		socket.broadcast.emit("USER_CONNECTED",currentUser);
+
+		socket.emit("USER_CONNECTED",currentUser);
 
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
@@ -79,6 +80,7 @@ io.on("connection", function(socket)
 	socket.on("disconnect", function()
 	{
 		socket.broadcast.emit("USER_DISCONNECTED", currentUser );
+
 		console.log("a user disconnected! There are now "+clients.length+" Users online!");
 
 		for( var i = 0 ; i < clients.length ; i++ )
@@ -87,7 +89,7 @@ io.on("connection", function(socket)
 			{
 				var clientName = clients[i].name;
 				clients.splice(i,1);
-				console.log("User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
+				//console.log("User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
 			}
 		};
 	});
