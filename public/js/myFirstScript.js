@@ -7,22 +7,18 @@ var particleLight;
 
 var objects = [], materials = [];
 
+var camPos = { x: 0, y: 600, z: 0 };
+var sphereSize = { r: 0, wS: 32, hS: 32 };
+var dirLightPos = { x: 0, y: 1000, z: 0 };
+
+var meshesPerRow = 3;
+var meshGrid = { x: 200, y: 200, z: 200 };
+
 init();
 animate();
 
-function init() {
-
-    //*************** START
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
-
-    //*************** CAMERA
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-    camera.position.set( 0, 200, 800 );
-
-    //*************** SCENE
-    scene = new THREE.Scene();
-
+function drawGrid()
+{
     //*************** GRID
     var line_material = new THREE.LineBasicMaterial( { color: 0xffaa00 } ),
         geometry = new THREE.Geometry(),
@@ -38,66 +34,55 @@ function init() {
     }
     var line = new THREE.LineSegments( geometry, line_material );
     scene.add( line );
+}
 
+function SetUpCamera()
+{
+    //*************** CAMERA
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera.position.set( camPos.x , camPos.y , camPos.z );
+}
+
+function SetUpLights()
+{
+    //*************** LIGHTS
+    //** AMBIENTLIGHT
+    scene.add( new THREE.AmbientLight( 0x091426 ) );
+    //** DIRECTIONAL
+    var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ 0xffffff, 1 );
+    directionalLight.position.x = dirLightPos.x;
+    directionalLight.position.y = dirLightPos.y;
+    directionalLight.position.z = dirLightPos.z;
+    directionalLight.position.normalize();
+    scene.add( directionalLight );
+}
+
+function init() {
+
+    //*************** START
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+    scene = new THREE.Scene();
+    SetUpCamera();
+    SetUpLights();
+    drawGrid();
     //*************** TEXTURE
-
-    var texture = new THREE.Texture( generateTexture() );
-    texture.needsUpdate = true;
-
-    //*************** MATERIALS
     var textureWood = new THREE.TextureLoader().load('assets/textures/wood.jpg');
-    materials.push( new THREE.MeshPhongMaterial( { map: textureWood, shading: THREE.FlatShading }) );
-    //** WIREFRAME RENDERER
+    //*************** MATERIALS
+    materials.push( new THREE.MeshLambertMaterial( { map: textureWood, shading: THREE.SmoothShading }) );
     materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } ) );
-    //** TRANSPARENT
     materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) );
-
-    //** Lambert Textured
-    materials.push( new THREE.MeshLambertMaterial( { map: texture, transparent: false } ) );
-    materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.FlatShading } ) );
-    materials.push( new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } ) );
-    materials.push( new THREE.MeshNormalMaterial( ) );
-
-    materials.push( new THREE.MeshLambertMaterial( { color: 0xdddddd, shading: THREE.SmoothShading } ) );
-    materials.push( new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.SmoothShading, map: texture, transparent: true } ) );
-    materials.push( new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } ) );
-
-    materials.push( new THREE.MeshDepthMaterial() );
-
-    //** EMMISSIVE
-    materials.push( new THREE.MeshLambertMaterial( { color: 0x666666, emissive: 0x550000, shading: THREE.SmoothShading } ) );
-    //** EMMISSIVE TRANSP
-    materials.push( new THREE.MeshPhongMaterial( { color: 0x000000, specular: 0x666666, emissive: 0x111100, shininess: 10, shading: THREE.SmoothShading, opacity: 0.9, transparent: true } ) );
-    //** textured transparent
-    materials.push( new THREE.MeshBasicMaterial( { map: texture, transparent: true } ) );
 
     //*************** GEOMETRY
     //** BASIC SPHERE MESH
-    var geometry = new THREE.SphereGeometry( 70, 32, 16 );
+    var geometry = new THREE.SphereGeometry( sphereSize.r , sphereSize.wS , sphereSize.hS );
     objects = [];
     //** ADD MATERIALS TO EACH SPHERE
     for ( var i = 0, l = materials.length; i < l; i ++ ) {
 
         addMesh( geometry, materials[ i ] );
     }
-    //** PARTICLE LIGHT
-    particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
-    scene.add( particleLight );
 
-    //*************** LIGHTS
-    //** AMBIENTLIGHT
-    scene.add( new THREE.AmbientLight( 0x091426 ) );
-    //** DIRECTIONAL
-    var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ 0xffffff, 0.125 );
-    directionalLight.position.x = 0;
-    directionalLight.position.y = 100;
-    directionalLight.position.z = 0;
-    //directionalLight.position.normalize();
-    scene.add( directionalLight );
-    //** POINTLIGHT
-    var pointLight = new THREE.PointLight( 0xffffff, 1 );
-    particleLight.add( pointLight );
-    //
     //*************** ADD the RENDERER
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -114,14 +99,13 @@ function init() {
 function addMesh( geometry, material ) {
     var mesh = new THREE.Mesh( geometry, material );
 
-    mesh.position.x = ( objects.length % 3 ) * 200 - 200;
-    mesh.position.z = Math.floor( objects.length / 3 ) * 200 - 500;
-    mesh.rotation.x = Math.random() * 200 - 100;
-    mesh.rotation.y = Math.random() * 200 - 100;
-    mesh.rotation.z = Math.random() * 200 - 100;
+    mesh.position.x = ( objects.length % meshesPerRow ) * (0.5*meshGrid.x) - (0.5*meshGrid.x);
+    mesh.position.z = Math.floor( objects.length / meshesPerRow ) * (0.5*meshGrid.z) - (0.5*meshGrid.z);
+    //mesh.rotation.x = Math.random() * 200 - 100;
+    //mesh.rotation.y = Math.random() * 200 - 100;
+    //mesh.rotation.z = Math.random() * 200 - 100;
 
     objects.push( mesh );
-
     scene.add( mesh );
 }
 
