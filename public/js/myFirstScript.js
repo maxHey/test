@@ -74,35 +74,38 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
-        var input = {x: 0, y:0, z:0};
-
-        if ( keyboard.pressed("W") || keyboard.down("up"))
+        if( thisUser )
         {
-            input.z = 1;
-            //player.mesh.translateZ( -moveDistance );
-        }
-        if ( keyboard.pressed("S") || keyboard.down("down") )
-        {
+             var input = {x: 0, y:0, z:0};
 
-            //player.mesh.translateZ( moveDistance );
-            input.z = -1;
-        }
+            if ( keyboard.pressed("W") || keyboard.down("up"))
+            {
+                input.z = 1;
+                //player.mesh.translateZ( -moveDistance );
+            }
+            if ( keyboard.pressed("S") || keyboard.down("down") )
+            {
 
-        if ( keyboard.pressed("D") || keyboard.down("right") )
-        {
-            //player.mesh.translateX( moveDistance );
-            input.x = 1;
-        }
-        if ( keyboard.pressed("A") || keyboard.down("left") )
-        {
-            //player.mesh.translateX(  -moveDistance );
-            input.x = -1;
-        }
+                //player.mesh.translateZ( moveDistance );
+                input.z = -1;
+            }
 
-        player.position = player.mesh.position;
+            if ( keyboard.pressed("D") || keyboard.down("right") )
+            {
+                //player.mesh.translateX( moveDistance );
+                input.x = 1;
+            }
+            if ( keyboard.pressed("A") || keyboard.down("left") )
+            {
+                //player.mesh.translateX(  -moveDistance );
+                input.x = -1;
+            }
 
-        thisUser.input= input;
-        socket.emit("MOVE",input);
+            player.position = player.mesh.position;
+
+            thisUser.input = input;
+            socket.emit("MOVE",input);   
+        }
     }
 }
 
@@ -344,8 +347,8 @@ function AttemptConnection(username)
 socket.on('connect', function(data)
 {
     thisUser.name = "unnamed";
-    thisUser.position= {x: 0, y:0, z:0};
-    thisUser.input= {x: 0, y:0, z:0};
+    thisUser.position = {x: 0, y:0, z:0};
+    thisUser.input = {x: 0, y:0, z:0};
     // Respond with a message including this clients' id sent from the server
     socket.emit('USER_CONNECT', thisUser );
 
