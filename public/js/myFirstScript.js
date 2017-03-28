@@ -151,3 +151,9 @@ function collectStar (player, star) {
     scoreText.text = 'Score: ' + score;
 
 }
+
+function render() {
+
+    game.debug.cameraInfo(game.camera, 32, 32);
+
+}
