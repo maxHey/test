@@ -328,7 +328,7 @@ socket = io.connect();
 socket.on('connect', function(data) 
 {
     thisUser.name = "unnamed";
-    thisUser.position = 0 +","+ 0 ","+ 0;
+    thisUser.position = 0 +","+ 0 +","+ 0;
     thisUser.input = 0 +","+ 0 ","+ 0;
     // Respond with a message including this clients' id sent from the server
     socket.emit('USER_CONNECT', thisUser );
