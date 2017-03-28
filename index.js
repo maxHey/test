@@ -26,22 +26,13 @@ io.on("connection", function(socket)
 	socket.on("USER_CONNECT",function(data)
 	{
 		console.log("User connected");
-		
 		currentUser = 
 		{
 			name: data.name,
 			position: data.position,
 			input: data.input
 		}
-		clients.push(currentUser);
 		socket.emit("USER_CONNECTED",currentUser);
-
-		for( var i = 0 ; i < clients.length ; i++ )
-		{
-			socket.emit("USER_CONNECTED", { name:clients[i].name , position:clients[i].position });
-			console.log("User: "+clients[i].name+ " is connected! There are now "+clients.length+" Users online!");
-		}
-
 	 });
 
 	socket.on("PLAY", function( data )
