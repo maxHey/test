@@ -32,6 +32,7 @@ io.on("connection", function(socket)
 			position: data.position,
 			input: data.input
 		}
+		console.log("Userdata: name:"+currentUser.name+" ,pos:"+currentUser.position+" ,input: "+currentUser.input);
 		socket.emit("USER_CONNECTED",currentUser);
 	 });
 

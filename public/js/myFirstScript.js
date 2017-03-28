@@ -100,11 +100,12 @@ function handleInput()
                 //player.mesh.translateX(  -moveDistance );
                 input.x = -1;
             }
-
-            player.position = player.mesh.position;
-
             thisUser.input = input;
             socket.emit("MOVE",input);   
+        }
+        else
+        {
+            console.log("thisUser is undefined...");
         }
     }
 }
