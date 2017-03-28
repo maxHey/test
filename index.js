@@ -14,8 +14,6 @@ var version = "27-03-2017-0000001";
 
 io.on("connection", function(socket)
 {
-  	console.log('a user connected');
-
 	var currentUser;
 	var playerspeed = 4.0;
 	var deltatime = 0.03
