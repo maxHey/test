@@ -23,10 +23,11 @@ io.on("connection", function(socket)
 
 	var debugIndex = 0;
 
-	socket.on("USER_CONNECT",function()
+	socket.on("USER_CONNECT",function(data)
 	{
 		console.log("User connected");
-
+		currentUser = data;
+		clients.push(currentUser);
 		socket.emit("USER_CONNECTED",currentUser);
 
 		for( var i = 0 ; i < clients.length ; i++ )

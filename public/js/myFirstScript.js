@@ -319,6 +319,13 @@ animate();
 
 
 
+
+var thisUser = 
+{
+    name: "unnamed",
+    position: 0 +","+ 0 ","+ 0,
+    input: 0 +","+ 0 ","+ 0
+}
 //***************************************************************************************************************************** SOCKET
 var socket = io();
 // Immediately start connecting
@@ -327,7 +334,7 @@ socket = io.connect();
 socket.on('connect', function(data) 
 {
     // Respond with a message including this clients' id sent from the server
-    socket.emit('USER_CONNECT');
+    socket.emit('USER_CONNECT',thisUser);
     console.log("attempt connection");
 });
 
