@@ -97,6 +97,7 @@ io.on("connection", function(socket)
 
 	function mainLoop()
 	{
+		socket.emit("MOVE",currentUser.position);
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
 			socket.emit("MOVE",clients[i].position);
