@@ -320,10 +320,10 @@ animate();
 
 
 
-function thisUser(data) {
-    name: data,
-    position: 0 +","+ 0 ","+ 0,
-    input: 0 +","+ 0 ","+ 0
+function ExampleObject(name) {
+    this.name = name,
+    this.position = 0 +","+ 0 ","+ 0,
+    this.input = 0 +","+ 0 ","+ 0
 }
 //***************************************************************************************************************************** SOCKET
 var socket = io();
@@ -333,7 +333,7 @@ socket = io.connect();
 socket.on('connect', function(data) 
 {
     // Respond with a message including this clients' id sent from the server
-    socket.emit('USER_CONNECT', new thisUser("unnamed") );
+    socket.emit('USER_CONNECT', new ExampleObject("unnamed") );
 
     console.log("attempt connection");
 });
