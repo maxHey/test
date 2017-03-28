@@ -69,7 +69,7 @@ io.on("connection", function(socket)
 			//var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
 			//var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
 
-			var newX = pos.x + ( inpu\.x * playerspeed * deltatime );
+			var newX = pos.x + ( input.x * playerspeed * deltatime );
 			var newY = pos.y + ( input.y * playerspeed * deltatime );
 			var newZ = pos.z + ( input.z * playerspeed * deltatime );
 			var newPos = {x: newX, y:newY, z:newZ};
