@@ -1,7 +1,6 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var scene;
-
 //***************************************************************************************************************************** System
 //****************************************************************************************************** INIT
 function init() {
@@ -74,7 +73,7 @@ function handleInput()
     if( keyboard)
     {
         keyboard.update();
-        var moveDistance = 100 * clock.getDelta(); 
+        var moveDistance = 100 * clock.getDelta();
 
         if ( keyboard.pressed("W") || keyboard.down("up"))
         {
@@ -138,7 +137,7 @@ function drawGrid()
     var line_material = new THREE.LineBasicMaterial( { color: 0xffaa00 } ),
         geometry = new THREE.Geometry(),
         floor = -75, step = 25;
-    for ( var i = 0; i <= 40; i ++ ) 
+    for ( var i = 0; i <= 40; i ++ )
     {
         geometry.vertices.push( new THREE.Vector3( - 500, floor, i * step - 500 ) );
         geometry.vertices.push( new THREE.Vector3(   500, floor, i * step - 500 ) );
@@ -156,7 +155,7 @@ var camSpawn = { x: 0, y: 600, z: 0 };
 var camOffset;
 //************************* METHODS
 //*************** SETUP
-// >> DEPENDENCIES: 
+// >> DEPENDENCIES:
 function SetUpCamera()
 {
     //*************** CAMERA
@@ -191,7 +190,7 @@ function SetUpLights()
 var textures = {};
 //************************* METHODS
 //*************** LOAD
-// >> DEPENDENCIES: 
+// >> DEPENDENCIES:
 function LoadTextures()
 {
     //*************** TEXTURE
@@ -199,7 +198,7 @@ function LoadTextures()
 }
 
 //************************* generateTexture
-// >> DEPENDENCIES: 
+// >> DEPENDENCIES:
 function generateTexture() {
     var canvas = document.createElement( 'canvas' );
     canvas.width = 256;
@@ -321,18 +320,20 @@ function onWindowResize() {
 init();
 animate();
 
-
-
-
-
-
 var thisUser = {};
 //***************************************************************************************************************************** SOCKET
 var socket = io();
 // Immediately start connecting
 socket = io.connect();
 
-socket.on('connect', function(data) 
+function AttemptConnection(username)
+{
+    thisUser.name = username; // "" 
+    //
+    socket.emit("PLAY", thisUser.name);
+}
+
+socket.on('connect', function(data)
 {
     thisUser.name = "unnamed";
     thisUser.position= {x: 0, y:0, z:0};
@@ -343,18 +344,26 @@ socket.on('connect', function(data)
     console.log("attempt connection");
 });
 
-socket.on('USER_CONNECTED', function(data) 
+socket.on('USER_CONNECTED', function(data)
 {
     console.log("Socket connected");
 });
 
-socket.on('disconnect', function(data) 
+socket.on("PLAY",function(data){
+
+});
+
+socket.on("MOVE",function(data){
+
+});
+
+socket.on('disconnect', function(data)
 {
     // Respond with a message including this clients' id sent from the server
     //socket.emit('USER_DISCONNECTED');
 });
 
-socket.on('time', function(data) 
+socket.on('time', function(data)
 {
     addMessage(data.time);
 });
