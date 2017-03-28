@@ -1,41 +1,78 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-var container, stats;
+var scene;
 
-var camera, scene, renderer;
-var particleLight;
+//***************************************************************************************************************************** System
+//************************************************************************* INIT
+function init() {
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+    scene = new THREE.Scene();
 
-var objects = [], materials = [];
+    SetUpCamera();
+    SetUpLights();
+    drawGrid();
 
-var camPos = { x: 0, y: 600, z: 0 };
-var sphereSize = { r: 0, wS: 32, hS: 32 };
-var dirLightPos = { x: 0, y: 1000, z: 0 };
+    LoadTextures();
+    SetupMaterials();
 
-var meshesPerRow = 3;
-var meshGrid = { x: 200, y: 200, z: 200 };
+    LoadGeometry();
+    SetupGeometry();
 
-init();
-animate();
+    SetupRenderer();
+    SetupFPSStats();
+    //
+    window.addEventListener( 'resize', onWindowResize, false );
+}
 
+//************************************************************************* Animate
+function animate() {
+
+    requestAnimationFrame( animate );
+
+    render();
+    stats.update();
+}
+
+//************************************************************************* Render
+function render() {
+
+    var timer = 0.0001 * Date.now();
+    camera.lookAt( scene.position );
+    renderer.render( scene, camera );
+}
+
+//***************************************************************************************************************************** METHODS
+//************************************************************************* GRID
+//************************* VARIABLES
+
+//************************* METHODS
+//*************** DRAW
+// >> DEPENDENCIES: scene
 function drawGrid()
 {
     //*************** GRID
     var line_material = new THREE.LineBasicMaterial( { color: 0xffaa00 } ),
         geometry = new THREE.Geometry(),
         floor = -75, step = 25;
-    for ( var i = 0; i <= 40; i ++ ) {
-
+    for ( var i = 0; i <= 40; i ++ ) 
+    {
         geometry.vertices.push( new THREE.Vector3( - 500, floor, i * step - 500 ) );
         geometry.vertices.push( new THREE.Vector3(   500, floor, i * step - 500 ) );
-
         geometry.vertices.push( new THREE.Vector3( i * step - 500, floor, -500 ) );
         geometry.vertices.push( new THREE.Vector3( i * step - 500, floor,  500 ) );
-
     }
     var line = new THREE.LineSegments( geometry, line_material );
     scene.add( line );
 }
 
+//************************************************************************* CAMERA
+//************************* VARIABLES
+var camera;
+var camPos = { x: 0, y: 600, z: 0 };
+//************************* METHODS
+//*************** SETUP
+// >> DEPENDENCIES: 
 function SetUpCamera()
 {
     //*************** CAMERA
@@ -43,6 +80,13 @@ function SetUpCamera()
     camera.position.set( camPos.x , camPos.y , camPos.z );
 }
 
+//************************************************************************* LIGHTS
+//************************* VARIABLES
+var dirLightPos = { x: 0, y: 1000, z: 0 };
+//var particleLight;
+//************************* METHODS
+//*************** SETUP
+// >> DEPENDENCIES: scene
 function SetUpLights()
 {
     //*************** LIGHTS
@@ -57,65 +101,20 @@ function SetUpLights()
     scene.add( directionalLight );
 }
 
-function init() {
-
-    //*************** START
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
-    scene = new THREE.Scene();
-    SetUpCamera();
-    SetUpLights();
-    drawGrid();
+//************************************************************************* TEXTURES
+//************************* VARIABLES
+var textures = {};
+//************************* METHODS
+//*************** LOAD
+// >> DEPENDENCIES: 
+function LoadTextures()
+{
     //*************** TEXTURE
-    var textureWood = new THREE.TextureLoader().load('assets/textures/wood.jpg');
-    //*************** MATERIALS
-    materials.push( new THREE.MeshLambertMaterial( { map: textureWood, shading: THREE.SmoothShading }) );
-    materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } ) );
-    materials.push( new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) );
-
-    //*************** GEOMETRY
-    //** BASIC SPHERE MESH
-    var geometry = new THREE.SphereGeometry( sphereSize.r , sphereSize.wS , sphereSize.hS );
-    objects = [];
-    //** ADD MATERIALS TO EACH SPHERE
-    for ( var i = 0, l = materials.length; i < l; i ++ ) {
-
-        addMesh( geometry, materials[ i ] );
-    }
-
-    //*************** ADD the RENDERER
-    renderer = new THREE.WebGLRenderer( { antialias: true } );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    //*************** CONTAINER
-    container.appendChild( renderer.domElement );
-    //
-    stats = new Stats();
-    container.appendChild( stats.dom );
-    //
-    window.addEventListener( 'resize', onWindowResize, false );
+    textures.wood = new THREE.TextureLoader().load('assets/textures/wood.jpg');
 }
 
-function addMesh( geometry, material ) {
-    var mesh = new THREE.Mesh( geometry, material );
-
-    mesh.position.x = ( objects.length % meshesPerRow ) * (0.5*meshGrid.x) - (0.5*meshGrid.x);
-    mesh.position.z = Math.floor( objects.length / meshesPerRow ) * (0.5*meshGrid.z) - (0.5*meshGrid.z);
-    //mesh.rotation.x = Math.random() * 200 - 100;
-    //mesh.rotation.y = Math.random() * 200 - 100;
-    //mesh.rotation.z = Math.random() * 200 - 100;
-
-    objects.push( mesh );
-    scene.add( mesh );
-}
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-}
-
+//************************* generateTexture
+// >> DEPENDENCIES: 
 function generateTexture() {
     var canvas = document.createElement( 'canvas' );
     canvas.width = 256;
@@ -141,39 +140,98 @@ function generateTexture() {
     return canvas;
 }
 
+//************************************************************************* MATERIALS
+//************************* VARIABLES
+var materials = {};
+//************************* METHODS
+//*************** SETUP
+// >> DEPENDENCIES: textures
+function SetupMaterials()
+{
+    //*************** MATERIALS
+    materials.wood = new THREE.MeshLambertMaterial( { map: textures.wood, shading: THREE.SmoothShading });
+    materials.wireframe = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
+    materials.additive = new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) ;
+}
+//************************************************************************* OBJECTS & GEOMETRY
+//************************* VARIABLES
+// Dictionaries
+var objects = [];
+var geometry = {};
 //
-
-function animate() {
-
-    requestAnimationFrame( animate );
-
-    render();
-    stats.update();
+var sphereSize = { r: 0, wS: 6, hS: 6 };
+//
+var meshesPerRow = 3;
+var meshGrid = { x: 200, y: 200, z: 200 };
+//************************* METHODS
+//*************** LOAD
+// >> DEPENDENCIES:
+function LoadGeometry()
+{
+    //** BASIC SPHERE MESH
+    geometry.sphere = new THREE.SphereGeometry( sphereSize.r , sphereSize.wS , sphereSize.hS );
 }
 
-function render() {
-
-    var timer = 0.0001 * Date.now();
-    //camera.position.x = Math.cos( timer ) * 1000;
-    //camera.position.z = Math.sin( timer ) * 1000;
-
-    camera.lookAt( scene.position );
-
-    /*
-    for ( var i = 0, l = objects.length; i < l; i ++ ) {
-        var object = objects[ i ];
-        object.rotation.x += 0.01;
-        object.rotation.y += 0.005;
+//*************** SETUP
+// >> DEPENDENCIES: materials
+function SetupGeometry()
+{
+    for( var key in materials )
+    {
+        addMesh( geometry.sphere, materials[key] );
     }
-    */
-
-    //materials[ materials.length - 2 ].emissive.setHSL( 0.54, 1, 0.35 * ( 0.5 + 0.5 * Math.sin( 35 * timer ) ) );
-    //materials[ materials.length - 3 ].emissive.setHSL( 0.04, 1, 0.35 * ( 0.5 + 0.5 * Math.cos( 35 * timer ) ) );
-
-    //particleLight.position.x = Math.sin( timer * 7 ) * 300;
-    //particleLight.position.y = Math.cos( timer * 5 ) * 400;
-    //particleLight.position.z = Math.cos( timer * 3 ) * 300;
-
-    renderer.render( scene, camera );
-
 }
+
+//*************** AddMesh
+// >> DEPENDENCIES: scene
+function addMesh( geometry, material ) {
+    var mesh = new THREE.Mesh( geometry, material );
+
+    mesh.position.x = ( objects.length % meshesPerRow ) * (0.5*meshGrid.x) - (0.5*meshGrid.x);
+    mesh.position.z = Math.floor( objects.length / meshesPerRow ) * (0.5*meshGrid.z) - (0.5*meshGrid.z);
+    //mesh.rotation.x = Math.random() * 200 - 100;
+    //mesh.rotation.y = Math.random() * 200 - 100;
+    //mesh.rotation.z = Math.random() * 200 - 100;
+
+    objects.push( mesh );
+    scene.add( mesh );
+}
+
+//************************************************************************* RENDERER
+//************************* VARIABLES
+var renderer;
+//************************* METHODS
+//*************** Setup Renderer
+// >> DEPENDENCIES: window
+function SetupRenderer()
+{
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+//************************************************************************* FPS STATS
+//************************* VARIABLES
+var container;
+var stats;
+//*************** Setup Renderer
+// >> DEPENDENCIES: renderer
+function SetupFPSStats()
+{
+    container.appendChild( renderer.domElement );
+    stats = new Stats();
+    container.appendChild( stats.dom );
+}
+
+//***************************************************************************************************************************** EVENTS
+//************************* OnWindowResize
+// >> DEPENDENCIES: camera, renderer, window
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+//***************************************************************************************************************************** EXECUTING
+init();
+animate();
