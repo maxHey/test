@@ -76,8 +76,7 @@ io.on("connection", function(socket)
 			var newPos = {x: newX, y:newY, z:newZ};
 			//console.log("[DEBUG "+debugIndex+"][4]"+currentUser.name+" newPos: "+newPos);debugIndex++;
 			currentUser.position = newPos;
-			//
-			console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
+			console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
 	});
 
 	socket.on("disconnect", function()
