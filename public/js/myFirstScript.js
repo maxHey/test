@@ -642,16 +642,16 @@ socket.on("MOVE_OTHERS",function(data)
     }
 });
 
-socket.on('USER_DISCONNECTED', function(data)
+socket.on('USER_DISCONNECTED', function(id)
 {
-    console.log("[USER_DISCONNECTED] id:"+ data.id +" has disconnected!");
+    console.log("[USER_DISCONNECTED] id:"+ id +" has disconnected!");
     if( otherplayers )
     {
-        if( otherplayers[data.id] )
+        if( otherplayers[id] )
         {
            //REMOVE 
-           removeEntityByID(data.id);
-           delete otherplayers[data.id];
+           removeEntityByID(id);
+           delete otherplayers[id];
         }
     }
 });
