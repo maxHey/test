@@ -303,10 +303,10 @@ function LoadHouseMesh()
 {
     //MANAGER
     var manager = new THREE.LoadingManager();
-    manager.onProgress = function( item, loaded, total ) {
-
+    //
+    manager.onProgress = function( item, loaded, total ) 
+    {
         console.log( item, loaded, total );
-
     };
     //FBX
     /*
@@ -329,7 +329,6 @@ function LoadHouseMesh()
             }
 
         } );
-        //object.position.y = - 95;
         object.position = new THREE.Vector3( 0 , 0 , 0 );
         scene.add( object );
     }, onProgress, onError );
