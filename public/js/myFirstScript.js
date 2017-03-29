@@ -34,7 +34,9 @@ function init()
 function animate() 
 {
     requestAnimationFrame( animate );
+
     handleInput();
+
     MoveCamera();
     render();
     //stats.update();
@@ -52,8 +54,8 @@ function render()
     renderer.autoClear = false;
     renderer.clear();
     renderer.render( scene, camera );
-    //renderer.clearDepth();
-    //renderer.render(sceneOrtho,cameraOrtho);
+    renderer.clearDepth();
+    renderer.render(sceneOrtho,cameraOrtho);
 }
 
 //***************************************************************************************************************************** METHODS
@@ -110,40 +112,31 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
-        if( player && socket )
+        var input = {x: 0, y:0, z:0};
+        if ( keyboard.pressed("W") || keyboard.down("up"))
         {
-             var input = {x: 0, y:0, z:0};
-
-            if ( keyboard.pressed("W") || keyboard.down("up"))
-            {
-                input.z = -1;
-                //player.mesh.translateZ( -moveDistance );
-            }
-            if ( keyboard.pressed("S") || keyboard.down("down") )
-            {
-
-                //player.mesh.translateZ( moveDistance );
-                input.z = 1;
-            }
-
-            if ( keyboard.pressed("D") || keyboard.down("right") )
-            {
-                //player.mesh.translateX( moveDistance );
-                input.x = 1;
-            }
-            if ( keyboard.pressed("A") || keyboard.down("left") )
-            {
-                //player.mesh.translateX(  -moveDistance );
-                input.x = -1;
-            }
-            player.input = input;
-            socket.emit("MOVE",input);     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT MOVE >>    >>    >>    >>
+            input.z = -1;
         }
-        else
+        if ( keyboard.pressed("S") || keyboard.down("down") )
         {
-            console.log("thisUser is undefined...");
+            input.z = 1;
         }
+
+        if ( keyboard.pressed("D") || keyboard.down("right") )
+        {
+            input.x = 1;
+        }
+        if ( keyboard.pressed("A") || keyboard.down("left") )
+        {
+            input.x = -1;
+        }
+        if( player ) player.input = input;
+        else console.log("player not initialized");
+
+        if( socket ) socket.emit("MOVE",input);     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT MOVE >>    >>    >>    >>
+        else console.log("socket not initialized");
     }
+    else console.log("keyboard not initialized");
 }
 
 //****************************************************************************************************** PLAYER (added 28-13-17 15:16)
