@@ -306,7 +306,7 @@ function LoadHouseMesh()
     loader.load
     (
         // resource URL
-        "assets/json/house.json"
+        "assets/json/house.json";
         // pass the loaded data to the onLoad function.
         //Here it is assumed to be an object
         function ( obj ) {
