@@ -91,6 +91,7 @@ io.on("connection", function(socket)
 					if( clients[i].name === currentUser.name)
 					{
 						var clientName = clients[i].name;
+						socket.broadcast.emit("USER_DISCONNECTED",i);
 						clients.splice(i,1);
 						console.log("[DISCONNECT] User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
 					}

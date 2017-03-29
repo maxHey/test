@@ -201,6 +201,7 @@ function SpawnPlayer(name,spawnPos,id,isThisPlayer)
         console.log("[SPAWN][4] Assigning OTHER player! ");
         otherplayers[id] = spawnedPlayer;
     }
+    spawnedPlayer.mesh.name = id;
     //
     objects.push( spawnedPlayer.mesh );
     scene.add( spawnedPlayer.mesh );
@@ -535,6 +536,12 @@ function makeTextSprite( message, params )
     return sprite;  
 }
 
+function removeEntityByID(id) 
+{
+    var selectedObject = scene.getObjectByName(id);
+    scene.remove( selectedObject );
+    //animate();
+}
 //***************************************************************************************************************************** EVENTS
 //************************* OnWindowResize
 // >> DEPENDENCIES: camera, renderer, window
@@ -631,6 +638,19 @@ socket.on("MOVE_OTHERS",function(data)
         else
         {
             SpawnOtherPlayer(data);
+        }
+    }
+});
+
+socket.on('USER_DISCONNECTED', function(data)
+{
+    if( otherplayers )
+    {
+        if( otherplayers[data.id] )
+        {
+           //REMOVE 
+           removeEntityByID(data.id);
+           delete otherplayers[data.id];
         }
     }
 });
