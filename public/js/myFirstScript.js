@@ -644,6 +644,7 @@ socket.on("MOVE_OTHERS",function(data)
 
 socket.on('USER_DISCONNECTED', function(data)
 {
+    console.log("[USER_DISCONNECTED] id:"+ data.id +" has disconnected!");
     if( otherplayers )
     {
         if( otherplayers[data.id] )
