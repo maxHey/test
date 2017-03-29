@@ -52,8 +52,8 @@ function render()
     renderer.autoClear = false;
     renderer.clear();
     renderer.render( scene, camera );
-    renderer.clearDepth();
-    renderer.render(sceneOrtho,cameraOrtho);
+    //renderer.clearDepth();
+    //renderer.render(sceneOrtho,cameraOrtho);
 }
 
 //***************************************************************************************************************************** METHODS
