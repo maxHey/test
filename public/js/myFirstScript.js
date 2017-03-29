@@ -301,31 +301,12 @@ function addMesh( geometry, material ) {
 
 function LoadHouseMesh()
 {
-    var loader = new THREE.ObjectLoader();
-
-    loader.load
-    (
-        // resource URL
-        "assets/json/house.json",
-        // pass the loaded data to the onLoad function.
-        //Here it is assumed to be an object
-        function ( obj ) {
-            //add the loaded object to the scene
-            scene.add( obj );
-        },
-        // Function called when download progresses
-        function ( xhr ) {
-            console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-        },
-        // Function called when download errors
-        function ( xhr ) {
-            console.error( 'An error happened' );
-        }
-    );
-    // Alternatively, to parse a previously loaded JSON structure
-    var object = loader.parse( a_json_object );
-
-    scene.add( object );
+    var objectLoader = new THREE.ObjectLoader();
+    objectLoader.load("assets/json/house.json", function ( geometry, materials ) 
+    {
+        var mesh = new THREE.Mesh( geometry, materials.house );
+        scene.add( mesh );
+    });
 }
 
 //****************************************************************************************************** RENDERER
