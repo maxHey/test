@@ -154,30 +154,35 @@ var player = {};
 //*************** METHODNAME
 function SpawnThisPlayer(data)
 {
-    console.log("Spawn this player");
+    console.log("[SPAWN][0] Spawn this player");
     var playerServerData = 
     {
         name: data.name,
         position: data.position, 
-        input: data.input 
+        input: data.input,
+        id: data.id
     }
     SpawnPlayer(playerServerData.name,playerServerData.position,true);
 }
 
 function SpawnOtherPlayer(data)
 {
+    console.log("[SPAWN][1] "+data.name+" has joined with ID:"+ data.id +"!");
+
     var playerServerData = 
     {
         name: data.name,
         position: data.position, 
-        input: data.input 
+        input: data.input,
+        id: data.id
     }
-    SpawnPlayer(playerServerData.name,playerServerData.position,false);
+    SpawnPlayer(playerServerData.name,playerServerData.position,playerServerData.id,false);
 }
 
 // >> DEPENDENCIES: geometry, materials , SpawnPlayerName
-function SpawnPlayer(name,spawnPos,isThisPlayer)
+function SpawnPlayer(name,spawnPos,id,isThisPlayer)
 {
+    console.log("[SPAWN][2] Spawning Player "+name+"!");
     var spawnedPlayer = {};
     //do something..
     spawnedPlayer.position = new THREE.Vector3( 0, 0, 0 );
@@ -187,6 +192,7 @@ function SpawnPlayer(name,spawnPos,isThisPlayer)
     spawnedPlayer.velocity = new THREE.Vector3( 0, 0, 0 );
     spawnedPlayer.input = new THREE.Vector3( 0, 0, 0 );
     spawnedPlayer.name = name;
+    spawnedPlayer.id = id;
     //
     players.push(spawnedPlayer);
     spawnedPlayer.mesh.position = spawnPos;
@@ -267,11 +273,11 @@ function MoveCamera()
     }
     else
     {
-        camera.position.set( camOffset.x , camOffset.y , camOffset.z );
-        camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+        //camera.position.set( camOffset.x , camOffset.y , camOffset.z );
+        //camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
-        cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
-        cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+        //cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
+        //cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
     }
 }
 
@@ -540,7 +546,6 @@ function onWindowResize()
 init();
 animate();
 
-var thisUser = {};
 //***************************************************************************************************************************** SOCKET
 var socket = io();
 // Immediately start connecting
@@ -548,20 +553,15 @@ socket = io.connect();
 
 function AttemptConnection(username)
 {
-    thisUser.name = username; // "" 
     //
     //socket.emit("PLAY", thisUser.name); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT PLAY >    >>    >>    >>
 }
 
 socket.on('connect', function(data)
 {
-    thisUser.name = "unnamed";
-    thisUser.position = {x: 0, y:0, z:0};
-    thisUser.input = {x: 0, y:0, z:0};
     // Respond with a message including this clients' id sent from the server
-    socket.emit('USER_CONNECT', thisUser );  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT USER_CONNECT >>    >>    >>    >>
-
-    console.log("attempt connection");
+    socket.emit('USER_CONNECT' );  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT USER_CONNECT >>    >>    >>    >>
+    console.log("attempting connection");
 });
 
 socket.on('OtherUserPlay', function(data)
@@ -578,14 +578,17 @@ socket.on("MOVE",function(data)
 {
     if( player && player.position )
     {
-        //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
-        player.position.x = data.x;
-        player.position.y = data.y;
-        player.position.z = data.z;
-        //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-        player.mesh.position.x = data.x;
-        player.mesh.position.y = data.y;
-        player.mesh.position.z = data.z;
+        if( data.id == player.id )
+        {
+            //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
+            player.position.x = data.x;
+            player.position.y = data.y;
+            player.position.z = data.z;
+            //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+            player.mesh.position.x = data.x;
+            player.mesh.position.y = data.y;
+            player.mesh.position.z = data.z;
+        }
     }
 });
 

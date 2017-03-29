@@ -35,7 +35,8 @@ io.on("connection", function(socket)
 			{
 				name: data,
 				position: {x: Math.random()*10, y:0, z:Math.random()*10}, //random start position
-				input: {x: 0, y:0, z:0} //no input
+				input: {x: 0, y:0, z:0}, //no input
+				id : clients.length
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
