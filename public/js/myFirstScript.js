@@ -179,12 +179,12 @@ function SpawnPlayer(name,spawnPos,id,isThisPlayer)
     console.log("[SPAWN][2] Spawning Player "+name+"!");
     var spawnedPlayer = {};
     //do something..
-    spawnedPlayer.position = new THREE.Vector3( 0, 0, 0 );
+    spawnedPlayer.position = {x: 0, y:0, z:0};
     spawnedPlayer.geometry = geometry.sphere;
     spawnedPlayer.material = materials.wireframe;
     spawnedPlayer.mesh = new THREE.Mesh( spawnedPlayer.geometry, spawnedPlayer.material );
     spawnedPlayer.velocity = new THREE.Vector3( 0, 0, 0 );
-    spawnedPlayer.input = new THREE.Vector3( 0, 0, 0 );
+    spawnedPlayer.input = {x: 0, y:0, z:0};
     spawnedPlayer.name = name;
     spawnedPlayer.id = id;
     //
