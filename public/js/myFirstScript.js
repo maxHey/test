@@ -211,7 +211,7 @@ function LoadTextures()
 {
     //*************** TEXTURE
     textures.wood = new THREE.TextureLoader().load('assets/textures/wood.jpg');
-    textures.house = new THREE.TextureLoader().load('assets/textures/house.png');
+    textures.house = new THREE.TextureLoader().load('assets/textures/house.jpg');
 }
 
 //************************* generateTexture
@@ -252,6 +252,7 @@ function SetupMaterials()
 {
     //*************** MATERIALS
     materials.wood = new THREE.MeshLambertMaterial( { map: textures.wood, shading: THREE.SmoothShading });
+    materials.house = new THREE.MeshLambertMaterial( { map: textures.house, shading: THREE.SmoothShading });
     materials.wireframe = new THREE.MeshBasicMaterial( { color: 0xffaa00, wireframe: true } );
     materials.additive = new THREE.MeshBasicMaterial( { color: 0xffaa00, transparent: true, blending: THREE.AdditiveBlending } ) ;
 }
@@ -324,7 +325,7 @@ function LoadHouseMesh()
     loader.load( 'assets/obj/house.obj', function ( object ) {
         object.traverse( function ( child ) {
             if ( child instanceof THREE.Mesh ) {
-                child.material.map = textures.house;
+                child.material = materials.house;
             }
 
         } );
