@@ -161,16 +161,19 @@ function SpawnThisPlayer(data)
 
 function SpawnOtherPlayer(data)
 {
-    console.log("[SPAWN][1] "+data.name+" has joined with ID:"+ data.id +"!");
-
-    var playerServerData = 
+    if( player && player.id != data.id )
     {
-        name: data.name,
-        position: data.position, 
-        input: data.input,
-        id: data.id
+        console.log("[SPAWN][1] "+data.name+" has joined with ID:"+ data.id +"!");
+
+        var playerServerData = 
+        {
+            name: data.name,
+            position: data.position, 
+            input: data.input,
+            id: data.id
+        }
+        SpawnPlayer(playerServerData.name,playerServerData.position,playerServerData.id,false);
     }
-    SpawnPlayer(playerServerData.name,playerServerData.position,playerServerData.id,false);
 }
 
 // >> DEPENDENCIES: geometry, materials , SpawnPlayerName
