@@ -76,9 +76,9 @@ io.on("connection", function(socket)
 		}
 	});
 
-	socket.on("disconnect", function()
+	socket.on("disconnect", function(msg)
 	{
-		console.log("a user disconnected!");
+		console.log("DISCONNECT! ID: "+msg);
 		//socket.broadcast.emit("USER_DISCONNECTED", currentUser );
 		/*
 		for( var i = 0 ; i < clients.length ; i++ )
