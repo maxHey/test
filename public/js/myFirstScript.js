@@ -123,7 +123,7 @@ var player = {};
 function SpawnPlayer()
 {
     //do something..
-    //player.position = new THREE.Vector3( 0, 0, 0 );
+    player.position = new THREE.Vector3( 0, 0, 0 );
     player.geometry = geometry.sphere;
     player.material = materials.wireframe;
     player.mesh = new THREE.Mesh( player.geometry, player.material );
