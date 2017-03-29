@@ -271,7 +271,7 @@ function MoveCamera()
         camera.position.set( x , y , z );
         camera.lookAt( player.position );
 
-        console.log("MoveCam "+ camera.position.x +","+ camera.position.y +","+ camera.position.z "!");
+        console.log("MoveCam "+ camera.position.x +","+ camera.position.y +","+ camera.position.z +"!");
 
         //cameraOrtho.position.set( x , y , z );
         //cameraOrtho.lookAt( player.position );
