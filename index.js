@@ -34,7 +34,7 @@ io.on("connection", function(socket)
 			currentUser = 
 			{
 				name: data,
-				position: {x: Math.random()*10, y:0, z:Math.random()*10}, //random start position
+				position: {x: Math.random()*200, y:0, z:Math.random()*200}, //random start position
 				input: {x: 0, y:0, z:0}, //no input
 				id : clients.length
 			}
