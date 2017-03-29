@@ -40,6 +40,7 @@ io.on("connection", function(socket)
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
+            console.log("[SERVER][PLAY] position: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
 
 			socket.emit("PLAY", currentUser);
 			socket.broadcast.emit("OtherUserPlay",currentUser);
@@ -115,6 +116,7 @@ io.on("connection", function(socket)
 				position: clients[i].position, //random start position
 				id : clients[i].id
 			}
+            console.log("[SERVER][MOVE] Client pos BEFORE emit: x:"+clientData.position.x+",y:"+clientData.position.y+",z"+clientData.position.z+"!");
 			socket.emit("MOVE",clientData);
 			socket.broadcast.emit("MOVE_OTHERS",clientData);
 		}
