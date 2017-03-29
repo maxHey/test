@@ -23,7 +23,7 @@ function init() {
     //
     window.addEventListener( 'resize', onWindowResize, false );
     //
-    SpawnPlayer();
+    SpawnPlayer("unnamed player");
 }
 
 //****************************************************************************************************** Animate
@@ -120,7 +120,7 @@ var player = {};
 //************************* METHODS
 //*************** METHODNAME
 // >> DEPENDENCIES: geometry, materials
-function SpawnPlayer()
+function SpawnPlayer(name)
 {
     //do something..
     player.position = new THREE.Vector3( 0, 0, 0 );
@@ -129,8 +129,8 @@ function SpawnPlayer()
     player.mesh = new THREE.Mesh( player.geometry, player.material );
     player.velocity = new THREE.Vector3( 0, 0, 0 );
     player.input = new THREE.Vector3( 0, 0, 0 );
-    player.name = "unnamed player";
-
+    player.name = name;
+    //
     players.push(player);
     //
     player.mesh.position = player.position;
@@ -192,10 +192,12 @@ function SetUpLights()
     scene.add( new THREE.AmbientLight( 0x091426 ) );
     //** DIRECTIONAL
     var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ 0xffffff, 1 );
+
     directionalLight.position.x = dirLightPos.x;
     directionalLight.position.y = dirLightPos.y;
     directionalLight.position.z = dirLightPos.z;
     directionalLight.position.normalize();
+
     scene.add( directionalLight );
 }
 
@@ -214,7 +216,8 @@ function LoadTextures()
 
 //************************* generateTexture
 // >> DEPENDENCIES:
-function generateTexture() {
+function generateTexture() 
+{
     var canvas = document.createElement( 'canvas' );
     canvas.width = 256;
     canvas.height = 256;
@@ -288,9 +291,6 @@ function addMesh( geometry, material ) {
 
     mesh.position.x = ( objects.length % meshesPerRow ) * (0.5*meshGrid.x) - (0.5*meshGrid.x);
     mesh.position.z = Math.floor( objects.length / meshesPerRow ) * (0.5*meshGrid.z) - (0.5*meshGrid.z);
-    //mesh.rotation.x = Math.random() * 200 - 100;
-    //mesh.rotation.y = Math.random() * 200 - 100;
-    //mesh.rotation.z = Math.random() * 200 - 100;
 
     objects.push( mesh );
     scene.add( mesh );
@@ -423,7 +423,7 @@ socket.on("PLAY",function(data){
 
 socket.on("MOVE",function(data){
 
-    console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
+    //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
     //
     player.position.x = data.x;
     player.position.y = data.y;
@@ -432,16 +432,6 @@ socket.on("MOVE",function(data){
     player.mesh.position.x = data.x;
     player.mesh.position.y = data.y;
     player.mesh.position.z = data.z;
-    //player.mesh.position.x += 0.2;
-    /*
-    player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-    //player.mesh.translateX( player.mesh.position.x - player.mesh.position.x );
-    //player.mesh.translateY( player.mesh.position.y - player.mesh.position.y );
-    //player.mesh.translateZ( player.mesh.position.z - player.mesh.position.z );
-    */
-    //player.mesh.translateY( data.y );
-    //player.mesh.translateZ( data.z );
-    //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
 });
 
 socket.on('disconnect', function(data)
