@@ -268,10 +268,10 @@ function MoveCamera()
         var y = player.position.y + camOffset.y;
         var z = player.position.z + camOffset.z;
 
-        console.log("Move camera to player position: "+ x +","+ y +","+ z "!");
-
         camera.position.set( x , y , z );
         camera.lookAt( player.position );
+
+        console.log("MoveCam "+ camera.position.x +","+ camera.position.y +","+ camera.position.z "!");
 
         //cameraOrtho.position.set( x , y , z );
         //cameraOrtho.lookAt( player.position );
