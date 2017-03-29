@@ -264,6 +264,7 @@ function MoveCamera()
 {
     if( player && player.position )
     {
+        //console.log("MoveCam "+ camera.position.x +","+ camera.position.y +","+ camera.position.z +"!");
         var x = player.position.x + camOffset.x;
         var y = player.position.y + camOffset.y;
         var z = player.position.z + camOffset.z;
@@ -271,7 +272,6 @@ function MoveCamera()
         camera.position.set( x , y , z );
         camera.lookAt( player.position );
 
-        console.log("MoveCam "+ camera.position.x +","+ camera.position.y +","+ camera.position.z +"!");
 
         //cameraOrtho.position.set( x , y , z );
         //cameraOrtho.lookAt( player.position );
@@ -595,10 +595,11 @@ socket.on("MOVE",function(data)
     {
         if( data.id == player.id )
         {
-            //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
+            console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
             player.position.x = data.x;
             player.position.y = data.y;
             player.position.z = data.z;
+            console.log("[CLIENT][MOVE] Player pos after move attempt: x:"+player.position.x+",y:"+player.position.y+",z"+player.position.z+"!");
             //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
             player.mesh.position.x = data.x;
             player.mesh.position.y = data.y;
