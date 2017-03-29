@@ -663,6 +663,7 @@ socket.on('USER_DISCONNECTED', function(id)
         {
            //REMOVE 
            removeEntityByID(id);
+           delete otherplayers[id].nameLabel;
            delete otherplayers[id];
         }
     }
