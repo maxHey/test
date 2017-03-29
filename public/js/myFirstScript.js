@@ -266,6 +266,8 @@ function MoveCamera()
     }
     else
     {
+        if( player ) console.log("player not initialized");
+        if( player.position ) console.log("player.position not initialized");
         //camera.position.set( camOffset.x , camOffset.y , camOffset.z );
         //camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
@@ -420,7 +422,8 @@ function SetupGeometry()
 
 //*************** AddMesh
 // >> DEPENDENCIES: scene
-function addMesh( geometry, material ) {
+function addMesh( geometry, material ) 
+{
     var mesh = new THREE.Mesh( geometry, material );
 
     mesh.position.x = ( objects.length % meshesPerRow ) * (0.5*meshGrid.x) - (0.5*meshGrid.x);
@@ -432,12 +435,12 @@ function addMesh( geometry, material ) {
 }
 
 function LoadMesh(url,position,rotation,scale)
-{// model
+{
+    // model
     var manager = new THREE.LoadingManager();
-    manager.onProgress = function ( item, loaded, total ) {
-
+    manager.onProgress = function ( item, loaded, total ) 
+    {
         console.log( item, loaded, total );
-
     };
     var loader = new THREE.OBJLoader( manager );
     loader.load( url , function ( object ) 
@@ -532,7 +535,6 @@ function onWindowResize()
     UpdateOrthographicCamera(width,height);
 
     renderer.setSize( width, height );
-
 }
 
 //***************************************************************************************************************************** EXECUTING
@@ -564,16 +566,19 @@ socket.on('ConnectCallBack', function(data)
 
 socket.on('OtherUserPlay', function(data)
 {
+    console.log("[OtherUserPlay] Spawn Other Players!");
     SpawnOtherPlayer(data);
 });
 
 socket.on("PLAY",function(data)
 {
+    console.log("[PLAY] Spawn Player!");
     SpawnThisPlayer(data);
 });
 
 socket.on("MOVE",function(data)
 {
+    console.log("[MOVE] Move command from server!");
     if( player && player.position )
     {
         if( data.id == player.id )
@@ -587,6 +592,11 @@ socket.on("MOVE",function(data)
             player.mesh.position.y = data.y;
             player.mesh.position.z = data.z;
         }
+    }
+    else
+    {
+        if( player ) console.log("[MOVE] player not defined!");
+        if( player.position ) console.log("[MOVE] player.position not defined!");
     }
 });
 
