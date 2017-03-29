@@ -628,6 +628,10 @@ socket.on("MOVE_OTHERS",function(data)
             otherplayers[data.id].mesh.position.z = data.z;
             */
         }
+        else
+        {
+            SpawnOtherPlayer(data);
+        }
     }
 });
 
