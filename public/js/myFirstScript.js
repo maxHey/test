@@ -189,7 +189,7 @@ function SetUpLights()
 {
     //*************** LIGHTS
     //** AMBIENTLIGHT
-    scene.add( new THREE.AmbientLight( 0x091426 ) );
+    scene.add( new THREE.AmbientLight( 0x183d4b ) );
     //** DIRECTIONAL
     var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ 0xffffff, 1 );
 
@@ -300,12 +300,31 @@ function addMesh( geometry, material ) {
 }
 
 function LoadHouseMesh()
-{
-    var objectLoader = new THREE.ObjectLoader();
-    objectLoader.load("assets/json/house.json", function ( geometry, materials ) 
+{// model
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+
+        console.log( item, loaded, total );
+
+    };
+    var loader = new THREE.OBJLoader( manager );
+    loader.load( 'assets/obj/house.obj' , function ( object ) 
     {
-        var mesh = new THREE.Mesh( geometry, materials.house );
-        scene.add( mesh );
+        object.traverse( function ( child ) 
+        {
+            if ( child instanceof THREE.Mesh ) 
+            {
+                //child.material.map = texture;
+                child.material = materials.house;
+            }
+        });
+        object.position.x = -400;
+        object.rotation.y = 90;
+        object.scale.x = 100;
+        object.scale.y = 100;
+        object.scale.z = 100;
+        obj = object
+        scene.add( obj );
     });
 }
 
