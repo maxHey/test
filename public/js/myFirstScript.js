@@ -154,13 +154,14 @@ var player = {};
 //*************** METHODNAME
 function SpawnThisPlayer(data)
 {
+    console.log("Spawn this player");
     var playerServerData = 
     {
         name: data.name,
         position: data.position, 
         input: data.input 
     }
-    SpawnPlayer(playerServerData.name,playerServerData.position,false);
+    SpawnPlayer(playerServerData.name,playerServerData.position,true);
 }
 
 function SpawnOtherPlayer(data)
@@ -171,7 +172,7 @@ function SpawnOtherPlayer(data)
         position: data.position, 
         input: data.input 
     }
-    SpawnPlayer(playerServerData.name,playerServerData.position,true);
+    SpawnPlayer(playerServerData.name,playerServerData.position,false);
 }
 
 // >> DEPENDENCIES: geometry, materials , SpawnPlayerName
