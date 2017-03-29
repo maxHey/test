@@ -23,32 +23,25 @@ io.on("connection", function(socket)
 
 	var debugIndex = 0;
 
-	socket.on("USER_CONNECT",function(data)
+	socket.on("USER_CONNECT",function()
 	{
 		console.log("User connected");
-		currentUser = 
-		{
-			name: data.name,
-			position: data.position,
-			input: data.input
-		}
-		console.log("Userdata: name:"+currentUser.name+" ,pos:"+currentUser.position+" ,input: "+currentUser.input);
-		socket.emit("USER_CONNECTED",currentUser);
+		//socket.emit("USER_CONNECTED",currentUser);
 	 });
 
 	socket.on("PLAY", function( data )
 	{
 			currentUser = 
 			{
-				name: data.name,
-				position: {x: 0, y:0, z:0}, //random start position
+				name: data,
+				position: {x: Math.random()*10, y:0, z:Math.random()*10}, //random start position
 				input: {x: 0, y:0, z:0} //no input
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
 
 			socket.emit("PLAY", currentUser);
-			socket.broadcast.emit("USER_CONNECTED",currentUser);
+			socket.broadcast.emit("OtherUserPlay",currentUser);
 	});
 
 	socket.on("MOVE", function( data ) 

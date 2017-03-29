@@ -1,12 +1,15 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var scene;
+var sceneOrtho;
 //***************************************************************************************************************************** System
 //****************************************************************************************************** INIT
-function init() {
+function init() 
+{
     container = document.createElement( 'div' );
     document.body.appendChild( container );
     scene = new THREE.Scene();
+    sceneOrtho = new THREE.Scene();
 
     SetUpCamera();
     SetUpLights();
@@ -19,35 +22,38 @@ function init() {
     SetupGeometry();
 
     SetupRenderer();
-    SetupFPSStats();
+    //SetupFPSStats();
     //
     window.addEventListener( 'resize', onWindowResize, false );
+    AddDocumentEventListeners();
     //
-    SpawnPlayer("unnamed player");
+    //SpawnPlayer("unnamed player");
 }
 
 //****************************************************************************************************** Animate
-function animate() {
-
+function animate() 
+{
     requestAnimationFrame( animate );
     handleInput();
+    MoveCamera();
     render();
-    stats.update();
+    //stats.update();
 }
 
 //****************************************************************************************************** Render
-function render() {
-
+function render() 
+{
+    if( player && player.nameLabel)
+    {
+        //RenderPlayerName();
+        //player.nameLabel.LookAt(camera.position);
+    }
     var timer = 0.0001 * Date.now();
-    var x = player.position.x + camOffset.x;
-    var y = player.position.y + camOffset.y;
-    var z = player.position.z + camOffset.z;
-    camera.position.set( x , y , z );
-
-    camera.lookAt( player.position );
-
-
+    renderer.autoClear = false;
+    renderer.clear();
     renderer.render( scene, camera );
+    renderer.clearDepth();
+    renderer.render(sceneOrtho,cameraOrtho);
 }
 
 //***************************************************************************************************************************** METHODS
@@ -63,6 +69,34 @@ function doSomething()
     //do something..
 }
 
+
+//***************************************************************************************************************************** EVENT LISTENERS
+//****************************************************************************************************** EVENT LISTENERS
+//************************* VARIABLES
+//var myVar;
+//************************* METHODS
+//*************** AddDocumentEventListeners
+function AddDocumentEventListeners()
+{
+    document.getElementById("btn_play").addEventListener("click", OnPlayButtonClicked );
+}
+
+//*************** OnPlayButtonClicked
+function OnPlayButtonClicked()
+{
+    var name = document.getElementById("inp_name").value;
+    if( !name || name == "" )
+    {
+        name = "unnamed";
+    }
+    else
+    {
+
+    }
+    socket.emit("PLAY",name);
+    //SpawnPlayer(name, new THREE.Vector3(0,0,0),true);
+    //ert("Play Button Pressed");
+}
 //****************************************************************************************************** INPUT
 //************************* VARIABLES
 var clock = new THREE.Clock();
@@ -112,33 +146,65 @@ function handleInput()
     }
 }
 
-
 //****************************************************************************************************** PLAYER (added 28-13-17 15:16)
 //************************* VARIABLES
 var players = [];
 var player = {};
 //************************* METHODS
 //*************** METHODNAME
-// >> DEPENDENCIES: geometry, materials
-function SpawnPlayer(name)
+function SpawnThisPlayer(data)
 {
-    //do something..
-    player.position = new THREE.Vector3( 0, 0, 0 );
-    player.geometry = geometry.sphere;
-    player.material = materials.wireframe;
-    player.mesh = new THREE.Mesh( player.geometry, player.material );
-    player.velocity = new THREE.Vector3( 0, 0, 0 );
-    player.input = new THREE.Vector3( 0, 0, 0 );
-    player.name = name;
-    //
-    players.push(player);
-    //
-    player.mesh.position = player.position;
-    //
-    objects.push( player.mesh );
-    scene.add( player.mesh );
+    var playerServerData = 
+    {
+        name: data.name,
+        position: data.position, 
+        input: data.input 
+    }
+    SpawnPlayer(name,position,false);
 }
 
+function SpawnOtherPlayer(data)
+{
+    var playerServerData = 
+    {
+        name: data.name,
+        position: data.position, 
+        input: data.input 
+    }
+    SpawnPlayer(name,position,true);
+}
+
+// >> DEPENDENCIES: geometry, materials , SpawnPlayerName
+function SpawnPlayer(name,spawnPos,isThisPlayer)
+{
+    var spawnedPlayer = {};
+    //do something..
+    spawnedPlayer.position = new THREE.Vector3( 0, 0, 0 );
+    spawnedPlayer.geometry = geometry.sphere;
+    spawnedPlayer.material = materials.wireframe;
+    spawnedPlayer.mesh = new THREE.Mesh( spawnedPlayer.geometry, spawnedPlayer.material );
+    spawnedPlayer.velocity = new THREE.Vector3( 0, 0, 0 );
+    spawnedPlayer.input = new THREE.Vector3( 0, 0, 0 );
+    spawnedPlayer.name = name;
+    //
+    players.push(spawnedPlayer);
+    spawnedPlayer.mesh.position = spawnPos;
+    //
+    if( isThisPlayer ) player = spawnedPlayer;
+    //
+    objects.push( spawnedPlayer.mesh );
+    scene.add( spawnedPlayer.mesh );
+    //
+    SpawnPlayerName(spawnedPlayer,spawnedPlayer.name);
+}
+//*************** SpawnPlayerName
+// >> DEPENDENCIES: 
+function SpawnPlayerName(spawnedPlayer,name)
+{
+    spawnedPlayer.nameLabel = makeTextSprite(name,{ fontsize: 64, fontface: "Georgia" } );
+    spawnedPlayer.nameLabel.position.set(spawnedPlayer.position.x , spawnedPlayer.position.y , spawnedPlayer.position.z );
+    sceneOrtho.add( spawnedPlayer.nameLabel );
+}
 //****************************************************************************************************** GRID
 //************************* VARIABLES
 
@@ -165,6 +231,7 @@ function drawGrid()
 //****************************************************************************************************** CAMERA
 //************************* VARIABLES
 var camera;
+var cameraOrtho;
 var camSpawn = { x: 0, y: 600, z: 0 };
 var camOffset;
 //************************* METHODS
@@ -172,15 +239,66 @@ var camOffset;
 // >> DEPENDENCIES:
 function SetUpCamera()
 {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
     //*************** CAMERA
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+    camera = new THREE.PerspectiveCamera( 45, width / height, 1, 2000 );
     camOffset = new THREE.Vector3( camSpawn.x , camSpawn.y , camSpawn.z );
     camera.position.set( camOffset.x , camOffset.y , camOffset.z );
+    //
+    cameraOrtho = new THREE.OrthographicCamera( - width / 2, width / 2, height / 2, - height / 2, 1, 2000 );
+    cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
+}
+
+function MoveCamera()
+{
+    if( player && player.position )
+    {
+        var x = player.position.x + camOffset.x;
+        var y = player.position.y + camOffset.y;
+        var z = player.position.z + camOffset.z;
+
+        camera.position.set( x , y , z );
+        camera.lookAt( player.position );
+
+        cameraOrtho.position.set( x , y , z );
+        cameraOrtho.lookAt( player.position );
+    }
+    else
+    {
+        camera.position.set( camOffset.x , camOffset.y , camOffset.z );
+        camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+
+        cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
+        cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+    }
+}
+
+//*********************************************** RESIZING FUNCTIONS
+// Called OnWindowResize
+function UpdateMainCamera(width,height)
+{
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+}
+
+function UpdateOrthographicCamera(width,height)
+{
+    cameraOrtho.left = - width / 2;
+    cameraOrtho.right = width / 2;
+    cameraOrtho.top = height / 2;
+    cameraOrtho.bottom = - height / 2;
+    cameraOrtho.updateProjectionMatrix();
+
+    updateHUDSprites();
 }
 
 //****************************************************************************************************** LIGHTS
 //************************* VARIABLES
 var dirLightPos = { x: 0, y: 1000, z: 0 };
+var ambientLightColor = 0x155c89;
+var dirLightColor = 0xffea98;
+var dirLightIntensity = 1.5;
 //var particleLight;
 //************************* METHODS
 //*************** SETUP
@@ -189,10 +307,22 @@ function SetUpLights()
 {
     //*************** LIGHTS
     //** AMBIENTLIGHT
-    scene.add( new THREE.AmbientLight( 0x183d4b ) );
+    scene.add( new THREE.AmbientLight( ambientLightColor ) );
     //** DIRECTIONAL
-    var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ 0xffffff, 1 );
-
+    var directionalLight = new THREE.DirectionalLight( /*Math.random() * */ dirLightColor, dirLightIntensity );
+    //
+    /*
+    //SHADOWMAP TEST
+    directionalLight.shadowMapWidth = 1024;
+    directionalLight.shadowMapHeight = 1024;
+    directionalLight.shadowCameraNear = 1;
+    directionalLight.shadowCameraFar = 1000;
+    directionalLight.shadowCameraLeft = -20; // or whatever value works for the scale of your scene
+    directionalLight.shadowCameraRight = 20;
+    directionalLight.shadowCameraTop = 20;
+    directionalLight.shadowCameraBottom = -20;
+    */
+    //
     directionalLight.position.x = dirLightPos.x;
     directionalLight.position.y = dirLightPos.y;
     directionalLight.position.z = dirLightPos.z;
@@ -279,10 +409,13 @@ function LoadGeometry()
 // >> DEPENDENCIES: materials
 function SetupGeometry()
 {
+    LoadMesh('assets/obj/house.obj',{x: -500, y:0, z:0},{x: 0, y:90, z:0},100);
+    /*
     for( var key in materials )
     {
         addMesh( geometry.sphere, materials[key] );
     }
+    */
 }
 
 //*************** AddMesh
@@ -296,10 +429,9 @@ function addMesh( geometry, material ) {
     objects.push( mesh );
     scene.add( mesh );
     //
-    LoadHouseMesh();
 }
 
-function LoadHouseMesh()
+function LoadMesh(url,position,rotation,scale)
 {// model
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
@@ -308,7 +440,7 @@ function LoadHouseMesh()
 
     };
     var loader = new THREE.OBJLoader( manager );
-    loader.load( 'assets/obj/house.obj' , function ( object ) 
+    loader.load( url , function ( object ) 
     {
         object.traverse( function ( child ) 
         {
@@ -318,11 +450,18 @@ function LoadHouseMesh()
                 child.material = materials.house;
             }
         });
-        object.position.x = -400;
-        object.rotation.y = 90;
-        object.scale.x = 100;
-        object.scale.y = 100;
-        object.scale.z = 100;
+        object.position.x = position.x;
+        object.position.y= position.y;
+        object.position.z = position.z;
+
+        object.rotation.x = rotation.x;
+        object.rotation.y= rotation.y;
+        object.rotation.z = rotation.z;
+
+        object.scale.x = scale;
+        object.scale.y = scale;
+        object.scale.z = scale;
+
         obj = object
         scene.add( obj );
     });
@@ -339,6 +478,7 @@ function SetupRenderer()
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    container.appendChild( renderer.domElement );
 }
 
 //****************************************************************************************************** FPS STATS
@@ -349,18 +489,50 @@ var stats;
 // >> DEPENDENCIES: renderer
 function SetupFPSStats()
 {
-    container.appendChild( renderer.domElement );
+    //container.appendChild( renderer.domElement );
     stats = new Stats();
     container.appendChild( stats.dom );
+}
+
+//****************************************************************************************************** UTILITIES
+function makeTextSprite( message, params )
+{
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    context.font = "Bold " + params.fontsize + "px " + params.fontface;
+    
+    // get size data (height depends only on font size)
+    var metrics = context.measureText( message );
+    var textWidth = metrics.width;
+    // text color
+    context.fillStyle = 0xffffff;
+    context.fillStyle = 'white';
+    //context.textAlign = "center"
+    context.fillText( message, 0, params.fontsize);
+    
+    // canvas contents will be used for a texture
+    var texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+
+    var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+    var sprite = new THREE.Sprite( spriteMaterial );
+    sprite.scale.set(100,50,1.0);
+    return sprite;  
 }
 
 //***************************************************************************************************************************** EVENTS
 //************************* OnWindowResize
 // >> DEPENDENCIES: camera, renderer, window
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+function onWindowResize() 
+{
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    UpdateMainCamera(width,height);
+    UpdateOrthographicCamera(width,height);
+
+    renderer.setSize( width, height );
+
 }
 
 //***************************************************************************************************************************** EXECUTING
@@ -377,7 +549,7 @@ function AttemptConnection(username)
 {
     thisUser.name = username; // "" 
     //
-    socket.emit("PLAY", thisUser.name); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT PLAY >    >>    >>    >>
+    //socket.emit("PLAY", thisUser.name); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT PLAY >    >>    >>    >>
 }
 
 socket.on('connect', function(data)
@@ -391,13 +563,14 @@ socket.on('connect', function(data)
     console.log("attempt connection");
 });
 
-socket.on('USER_CONNECTED', function(data)
+socket.on('OtherUserPlay', function(data)
 {
-    console.log("Socket connected");
+    SpawnOtherPlayer(data);
 });
 
-socket.on("PLAY",function(data){
-
+socket.on("PLAY",function(data)
+{
+    SpawnThisPlayer(data);
 });
 
 socket.on("MOVE",function(data){
