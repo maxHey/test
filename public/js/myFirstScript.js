@@ -611,9 +611,9 @@ socket.on("MOVE",function(data)
         if( data.id == player.id )
         {
             var newPos = { x: data.position.x , y: data.position.y, z: data.position.z };
-            player.position.x = lerp( player.position.x , newPos.x , 0.1 );
-            player.position.y = lerp( player.position.y , newPos.y , 0.1 );
-            player.position.z = lerp( player.position.z , newPos.z , 0.1 );
+            player.position.x = lerp( player.position.x , newPos.x , 0.2 );
+            player.position.y = lerp( player.position.y , newPos.y , 0.2 );
+            player.position.z = lerp( player.position.z , newPos.z , 0.2 );
             //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
             player.mesh.position.x = player.position.x;
             player.mesh.position.y = player.position.y;
@@ -662,8 +662,9 @@ socket.on('USER_DISCONNECTED', function(id)
         if( otherplayers[id] )
         {
            //REMOVE 
+           scene.remove( otherplayers[id].mesh );
+           scene.remove( otherplayers[id].nameLabel );
            removeEntityByID(id);
-           delete otherplayers[id].nameLabel;
            delete otherplayers[id];
         }
     }
