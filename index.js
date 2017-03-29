@@ -12,6 +12,8 @@ var clients = [];
 
 var version = "27-03-2017-0000002";
 
+var clientID = 0;
+
 io.on("connection", function(socket)
 {
 	var currentUser;
@@ -31,12 +33,13 @@ io.on("connection", function(socket)
 
 	socket.on("PLAY", function( data )
 	{
+		    clientID ++;
 			currentUser = 
 			{
 				name: data,
 				position: {x: Math.random()*200, y:0, z:Math.random()*200}, //random start position
 				input: {x: 0, y:0, z:0}, //no input
-				id : clients.length
+				id : clientID
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
