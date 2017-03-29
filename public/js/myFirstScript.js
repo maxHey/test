@@ -39,11 +39,12 @@ function animate() {
 function render() {
 
     var timer = 0.0001 * Date.now();
-    var x = player.position.x + camOffset.x;
-    var y = player.position.y + camOffset.y;
-    var z = player.position.z + camOffset.z;
+    var x = player.mesh.position.x + camOffset.x;
+    var y = player.mesh.position.y + camOffset.y;
+    var z = player.mesh.position.z + camOffset.z;
     camera.position.set( x , y , z );
-    camera.lookAt( player.position );
+
+    camera.lookAt( player.mesh.position );
 
 
     renderer.render( scene, camera );
@@ -425,7 +426,10 @@ socket.on("MOVE",function(data){
     console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
     //
     player.position = new THREE.Vector3( data.x , data.y , data.z );
-    player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+    //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+    player.mesh.position.x = data.x;
+    player.mesh.position.y = data.y;
+    player.mesh.position.z = data.z;
     //player.mesh.position.x += 0.2;
     /*
     player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
