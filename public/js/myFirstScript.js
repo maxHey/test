@@ -301,52 +301,31 @@ function addMesh( geometry, material ) {
 
 function LoadHouseMesh()
 {
-    //MANAGER
-    var manager = new THREE.LoadingManager();
-    //
-    manager.onProgress = function( item, loaded, total ) 
-    {
-        console.log( item, loaded, total );
-    };
-    //FBX
-    /*
-    var loader = new THREE.FBXLoader( manager );
-    loader.load( 'assets/fbx/xsi_man_skinning.fbx', function( object ) {
+    var loader = new THREE.ObjectLoader();
 
-        object.mixer = new THREE.AnimationMixer( object );
-        mixers.push( object.mixer );
-        var action = object.mixer.clipAction( object.animations[ 0 ] );
-        action.play();
-        scene.add( object );
-    }, onProgress, onError );
-    */
-    //OBJ
-    var loader = new THREE.OBJLoader( manager );
-    loader.load( 'assets/obj/house.obj', function ( object ) {
-        object.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-                child.material = materials.house;
-            }
-
-        } );
-        object.position = new THREE.Vector3( 0 , 0 , 0 );
-        scene.add( object );
-    }, onProgress, onError );
-
-    var onProgress = function( xhr ) 
-    {
-        if ( xhr.lengthComputable )
-        {
-            var percentComplete = xhr.loaded / xhr.total * 100;
-            console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+    loader.load
+    (
+        // resource URL
+        "assets/json/house.json"
+        // pass the loaded data to the onLoad function.
+        //Here it is assumed to be an object
+        function ( obj ) {
+            //add the loaded object to the scene
+            scene.add( obj );
+        },
+        // Function called when download progresses
+        function ( xhr ) {
+            console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+        },
+        // Function called when download errors
+        function ( xhr ) {
+            console.error( 'An error happened' );
         }
+    );
+    // Alternatively, to parse a previously loaded JSON structure
+    var object = loader.parse( a_json_object );
 
-    };
-
-    var onError = function( xhr ) 
-    {
-         console.log( "LOADING MESH FAILED!" );
-    };
+    scene.add( object );
 }
 
 //****************************************************************************************************** RENDERER
