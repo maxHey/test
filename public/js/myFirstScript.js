@@ -193,9 +193,15 @@ function SpawnPlayer(name,spawnPos,id,isThisPlayer)
     spawnedPlayer.mesh.position = spawnPos;
     //
     if( isThisPlayer ) 
+    {
+        console.log("[SPAWN][3] Assigning this player! ");
         player = spawnedPlayer;
+    }
     else
+    {
+        console.log("[SPAWN][4] Assigning OTHER player! ");
         otherplayers[id] = spawnedPlayer;
+    }
     //
     objects.push( spawnedPlayer.mesh );
     scene.add( spawnedPlayer.mesh );
