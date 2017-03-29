@@ -85,7 +85,6 @@ io.on("connection", function(socket)
 		{
 			for( var i = 0 ; i < clients.length ; i++ )
 			{
-
 				if( clients[i] )
 				{
 					if( clients[i].name === currentUser.name)

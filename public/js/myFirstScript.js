@@ -110,7 +110,7 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
-        if( thisUser )
+        if( player )
         {
              var input = {x: 0, y:0, z:0};
 
@@ -136,12 +136,12 @@ function handleInput()
                 //player.mesh.translateX(  -moveDistance );
                 input.x = -1;
             }
-            thisUser.input = input;
+            player.input = input;
             socket.emit("MOVE",input);     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT MOVE >>    >>    >>    >>
         }
         else
         {
-            console.log("thisUser is undefined...");
+            console.log("player is undefined...");
         }
     }
 }
