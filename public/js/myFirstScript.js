@@ -573,17 +573,19 @@ socket.on("PLAY",function(data)
     SpawnThisPlayer(data);
 });
 
-socket.on("MOVE",function(data){
-
-    //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
-    //
-    player.position.x = data.x;
-    player.position.y = data.y;
-    player.position.z = data.z;
-    //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-    player.mesh.position.x = data.x;
-    player.mesh.position.y = data.y;
-    player.mesh.position.z = data.z;
+socket.on("MOVE",function(data)
+{
+    if( player && player.position )
+    {
+        //console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
+        player.position.x = data.x;
+        player.position.y = data.y;
+        player.position.z = data.z;
+        //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+        player.mesh.position.x = data.x;
+        player.mesh.position.y = data.y;
+        player.mesh.position.z = data.z;
+    }
 });
 
 socket.on('disconnect', function(data)
