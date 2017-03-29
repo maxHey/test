@@ -207,6 +207,7 @@ function LoadTextures()
 {
     //*************** TEXTURE
     textures.wood = new THREE.TextureLoader().load('assets/textures/wood.jpg');
+    textures.house = new THREE.TextureLoader().load('assets/textures/house.png');
 }
 
 //************************* generateTexture
@@ -291,6 +292,60 @@ function addMesh( geometry, material ) {
 
     objects.push( mesh );
     scene.add( mesh );
+    //
+    LoadHouseMesh();
+}
+
+function LoadHouseMesh()
+{
+    //MANAGER
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function( item, loaded, total ) {
+
+        console.log( item, loaded, total );
+
+    };
+    //FBX
+    /*
+    var loader = new THREE.FBXLoader( manager );
+    loader.load( 'assets/fbx/xsi_man_skinning.fbx', function( object ) {
+
+        object.mixer = new THREE.AnimationMixer( object );
+        mixers.push( object.mixer );
+        var action = object.mixer.clipAction( object.animations[ 0 ] );
+        action.play();
+        scene.add( object );
+    }, onProgress, onError );
+    */
+    //OBJ
+
+    var loader = new THREE.OBJLoader( manager );
+    loader.load( 'assets/obj/house.obj', function ( object ) {
+        object.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.material.map = textures.house;
+            }
+
+        } );
+        //object.position.y = - 95;
+        object.position = new THREE.Vector3( 0 , 0 , 0 );
+        scene.add( object );
+    }, onProgress, onError );
+
+    var onProgress = function( xhr ) 
+    {
+        if ( xhr.lengthComputable )
+        {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
+        }
+
+    };
+
+    var onError = function( xhr ) 
+    {
+
+    };
 }
 
 //****************************************************************************************************** RENDERER
