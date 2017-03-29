@@ -595,6 +595,7 @@ socket.on("MOVE",function(data)
     {
         if( data.id == player.id )
         {
+            console.log("[CLIENT][MOVE] Player pos BEFORE move attempt: x:"+player.position.x+",y:"+player.position.y+",z"+player.position.z+"!");
             console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
             player.position.x = data.x;
             player.position.y = data.y;
