@@ -422,8 +422,7 @@ socket.on("PLAY",function(data){
 
 socket.on("MOVE",function(data){
 
-    console.log("Attempt player move!");
-    console.log("[CLIENT][MOVE] to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
+    console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
     //
     player.position = new THREE.Vector3( data.x , data.y , data.z );
     player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
