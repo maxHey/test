@@ -32,6 +32,7 @@ io.on("connection", function(socket)
 			position: data.position,
 			input: data.input
 		}
+		console.log("Userdata: name:"+currentUser.name+" ,pos:"+currentUser.position+" ,input: "+currentUser.input);
 		socket.emit("USER_CONNECTED",currentUser);
 	 });
 
@@ -40,8 +41,8 @@ io.on("connection", function(socket)
 			currentUser = 
 			{
 				name: data.name,
-				position: data.position,
-				input: data.input
+				position: {x: 0, y:0, z:0}, //random start position
+				input: {x: 0, y:0, z:0} //no input
 			}
 			clients.push(currentUser);
 			console.log("User: "+currentUser.name+ " is connected! There are now "+clients.length+" Users online!");
@@ -54,25 +55,28 @@ io.on("connection", function(socket)
 	{
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
 			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
-			var pos = currentUser.position.replace("(", '').replace(")", '').split(",");
-			console.log("[DEBUG "+debugIndex+"][2]"+currentUser.name+" pos: "+pos); debugIndex++;
+			var pos = currentUser.position;
+			//console.log("[DEBUG "+debugIndex+"][2]"+currentUser.name+" pos: "+pos); debugIndex++;
 
 			//console.log("[DEBUG][1] data.movdir: "+data.movdir);
-			var input = data.input.slice(1, -1);
+			var input = data;
 			//console.log("[DEBUG][2] input: "+input);
-			var dir = input.split(",");
-			console.log("[DEBUG "+debugIndex+"][3] dir: "+dir);debugIndex++;
+			//console.log("[DEBUG "+debugIndex+"][3] dir: "+dir);debugIndex++;
 			//console.log(currentUser.name+" movdir "+data.movdir+" * playerspeed:"+playerspeed);
-			console.log("[DEBUG "+debugIndex+"][3.1] dir[0]: "+dir[0]);debugIndex++;
-			console.log("[DEBUG "+debugIndex+"][3.2] parseFloat(dir[0]):"+parseFloat(dir[0]));debugIndex++;
-			console.log("[DEBUG "+debugIndex+"][3.3] parseFloat(pos[0]):"+parseFloat(pos[0]));debugIndex++;
-			var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
-			var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
-			var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
-			var newPos = x +","+ y +","+ z;
-			console.log("[DEBUG "+debugIndex+"][4]"+currentUser.name+" newPos: "+newPos);debugIndex++;
+			//console.log("[DEBUG "+debugIndex+"][3.1] dir[0]: "+dir[0]);debugIndex++;
+			//console.log("[DEBUG "+debugIndex+"][3.2] parseFloat(dir[0]):"+parseFloat(dir[0]));debugIndex++;
+			//console.log("[DEBUG "+debugIndex+"][3.3] parseFloat(pos[0]):"+parseFloat(pos[0]));debugIndex++;
+			//var x = parseFloat(pos[0]) + ((parseFloat(dir[0]) * playerspeed * deltatime));
+			//var y = parseFloat(pos[1]) + ((parseFloat(dir[1]) * playerspeed * deltatime));
+			//var z = parseFloat(pos[2]) + ((parseFloat(dir[2]) * playerspeed * deltatime));
+
+			var newX = pos.x + ( input.x * playerspeed * deltatime );
+			var newY = pos.y + ( input.y * playerspeed * deltatime );
+			var newZ = pos.z + ( input.z * playerspeed * deltatime );
+			var newPos = {x: newX, y:newY, z:newZ};
+			//console.log("[DEBUG "+debugIndex+"][4]"+currentUser.name+" newPos: "+newPos);debugIndex++;
 			currentUser.position = newPos;
-			//console.log("[MOVE]"+currentUser.name+" to: "+currentUser.position);
+			console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
 	});
 
 	socket.on("disconnect", function()
@@ -94,9 +98,14 @@ io.on("connection", function(socket)
 
 	function mainLoop()
 	{
+		if( currentUser )
+		{
+			socket.emit("MOVE",currentUser.position);
+		}
+		
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
-			socket.emit("MOVE",clients[i]);
+			socket.emit("MOVE",clients[i].position);
 		}
 	}
 	setInterval( mainLoop , 16);
