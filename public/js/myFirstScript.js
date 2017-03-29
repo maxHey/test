@@ -72,7 +72,6 @@ function doSomething()
     //do something..
 }
 
-
 //***************************************************************************************************************************** EVENT LISTENERS
 //****************************************************************************************************** EVENT LISTENERS
 //************************* VARIABLES
@@ -268,6 +267,7 @@ function MoveCamera()
         var x = player.position.x + camOffset.x;
         var y = player.position.y + camOffset.y;
         var z = player.position.z + camOffset.z;
+        console.log("Move camera to player position: ("+ x +","+ y +","+ z ")");
 
         camera.position.set( x , y , z );
         camera.lookAt( player.position );
@@ -279,7 +279,6 @@ function MoveCamera()
     {
         //if( player ) console.log("player not initialized");
         //if( player.position ) console.log("player.position not initialized");
-
         camera.position.set( camOffset.x , camOffset.y , camOffset.z );
         camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
