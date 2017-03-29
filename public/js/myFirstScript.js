@@ -291,7 +291,7 @@ function UpdateOrthographicCamera(width,height)
     cameraOrtho.bottom = - height / 2;
     cameraOrtho.updateProjectionMatrix();
 
-    updateHUDSprites();
+    //updateHUDSprites();
 }
 
 //****************************************************************************************************** LIGHTS
