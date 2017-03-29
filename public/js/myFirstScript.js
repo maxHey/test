@@ -144,6 +144,7 @@ function handleInput()
 //************************* VARIABLES
 var players = [];
 var player = {};
+var otherplayers = {};
 //************************* METHODS
 //*************** METHODNAME
 function SpawnThisPlayer(data)
@@ -191,7 +192,10 @@ function SpawnPlayer(name,spawnPos,id,isThisPlayer)
     players.push(spawnedPlayer);
     spawnedPlayer.mesh.position = spawnPos;
     //
-    if( isThisPlayer ) player = spawnedPlayer;
+    if( isThisPlayer ) 
+        player = spawnedPlayer;
+    else
+        otherplayers[id] = spawnedPlayer;
     //
     objects.push( spawnedPlayer.mesh );
     scene.add( spawnedPlayer.mesh );
@@ -580,7 +584,7 @@ socket.on("PLAY",function(data)
 
 socket.on("MOVE",function(data)
 {
-    console.log("[MOVE] Move command from server!");
+    //console.log("[MOVE] Move command from server!");
     if( player && player.position )
     {
         if( data.id == player.id )
@@ -599,6 +603,26 @@ socket.on("MOVE",function(data)
     {
         if( player ) console.log("[MOVE] player not defined!");
         if( player.position ) console.log("[MOVE] player.position not defined!");
+    }
+});
+
+socket.on("MOVE_OTHERS",function(data)
+{
+    //console.log("[MOVE_OTHERS] Move command from server!");
+    if( otherplayers )
+    {
+        if( otherplayers[data.id] )
+        {
+            otherplayers[data.id].position = data.position;
+            //
+            otherplayers[data.id].mesh.position.set( data.position.x , data.position.y , data.position.z );
+            //
+            /*
+            otherplayers[data.id].mesh.position.x = data.x;
+            otherplayers[data.id].mesh.position.y = data.y;
+            otherplayers[data.id].mesh.position.z = data.z;
+            */
+        }
     }
 });
 

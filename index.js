@@ -47,7 +47,6 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
-		/*
 		if( currentUser && currentUser.position )
 		{
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
@@ -76,7 +75,6 @@ io.on("connection", function(socket)
 			//
 			//console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
 		}
-		*/
 	});
 
 	socket.on("disconnect", function(msg)
@@ -111,7 +109,14 @@ io.on("connection", function(socket)
 		*/
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
-			socket.emit("MOVE",clients[i].position);
+			var clientData = 
+			{
+				name: clients[i].name,
+				position: clients[i].position, //random start position
+				id : clients[i].id
+			}
+			socket.emit("MOVE",clientData);
+			socket.broadcast.emit("MOVE_OTHERS",clientData);
 		}
 	}
 	setInterval( mainLoop , 16);
