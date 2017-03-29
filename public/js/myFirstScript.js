@@ -270,8 +270,8 @@ function MoveCamera()
         camera.position.set( camOffset.x , camOffset.y , camOffset.z );
         camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
-        //cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
-        //cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+        cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
+        cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
     }
 }
 
