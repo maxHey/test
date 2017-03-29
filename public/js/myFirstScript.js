@@ -39,12 +39,12 @@ function animate() {
 function render() {
 
     var timer = 0.0001 * Date.now();
-    var x = player.mesh.position.x + camOffset.x;
-    var y = player.mesh.position.y + camOffset.y;
-    var z = player.mesh.position.z + camOffset.z;
+    var x = player.position.x + camOffset.x;
+    var y = player.position.y + camOffset.y;
+    var z = player.position.z + camOffset.z;
     camera.position.set( x , y , z );
 
-    camera.lookAt( player.mesh.position );
+    camera.lookAt( player.position );
 
 
     renderer.render( scene, camera );
@@ -123,7 +123,7 @@ var player = {};
 function SpawnPlayer()
 {
     //do something..
-    player.position = new THREE.Vector3( 0, 0, 0 );
+    //player.position = new THREE.Vector3( 0, 0, 0 );
     player.geometry = geometry.sphere;
     player.material = materials.wireframe;
     player.mesh = new THREE.Mesh( player.geometry, player.material );
@@ -425,7 +425,9 @@ socket.on("MOVE",function(data){
 
     console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
     //
-    player.position = new THREE.Vector3( data.x , data.y , data.z );
+    player.position.x = data.x;
+    player.position.y = data.y;
+    player.position.z = data.z;
     //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
     player.mesh.position.x = data.x;
     player.mesh.position.y = data.y;
