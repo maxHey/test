@@ -425,12 +425,13 @@ socket.on("MOVE",function(data){
     console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
     //
     player.position = new THREE.Vector3( data.x , data.y , data.z );
-    player.mesh.position.x += 0.2;
+    player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
+    //player.mesh.position.x += 0.2;
     /*
     player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-    player.mesh.translateX( player.mesh.position.x - player.mesh.position.x );
-    player.mesh.translateY( player.mesh.position.y - player.mesh.position.y );
-    player.mesh.translateZ( player.mesh.position.z - player.mesh.position.z );
+    //player.mesh.translateX( player.mesh.position.x - player.mesh.position.x );
+    //player.mesh.translateY( player.mesh.position.y - player.mesh.position.y );
+    //player.mesh.translateZ( player.mesh.position.z - player.mesh.position.z );
     */
     //player.mesh.translateY( data.y );
     //player.mesh.translateZ( data.z );
