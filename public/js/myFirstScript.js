@@ -618,6 +618,8 @@ socket.on("MOVE",function(data)
             player.mesh.position.x = player.position.x;
             player.mesh.position.y = player.position.y;
             player.mesh.position.z = player.position.z;
+            //
+            player.nameLabel.position = player.position;
         }
     }
     else
