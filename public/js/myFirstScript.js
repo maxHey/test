@@ -157,7 +157,7 @@ function SpawnThisPlayer(data)
         input: data.input,
         id: data.id
     }
-    SpawnPlayer(playerServerData.name,playerServerData.position,true);
+    SpawnPlayer(playerServerData.name,playerServerData.position,playerServerData.id,true);
 }
 
 function SpawnOtherPlayer(data)
