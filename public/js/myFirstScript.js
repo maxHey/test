@@ -595,16 +595,13 @@ socket.on("MOVE",function(data)
     {
         if( data.id == player.id )
         {
-            console.log("[CLIENT][MOVE] Player pos BEFORE move attempt: x:"+player.position.x+",y:"+player.position.y+",z"+player.position.z+"!");
-            console.log("[CLIENT][MOVE] Attempt player move to: x:"+data.x+",y:"+data.y+",z"+data.z+"!");
-            player.position.x = data.x;
-            player.position.y = data.y;
-            player.position.z = data.z;
-            console.log("[CLIENT][MOVE] Player pos after move attempt: x:"+player.position.x+",y:"+player.position.y+",z"+player.position.z+"!");
+            player.position.x = data.position.x;
+            player.position.y = data.position.y;
+            player.position.z = data.position.z;
             //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-            player.mesh.position.x = data.x;
-            player.mesh.position.y = data.y;
-            player.mesh.position.z = data.z;
+            player.mesh.position.x = data.position.x;
+            player.mesh.position.y = data.position.y;
+            player.mesh.position.z = data.position.z;
         }
     }
     else

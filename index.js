@@ -116,7 +116,7 @@ io.on("connection", function(socket)
 				position: clients[i].position, //random start position
 				id : clients[i].id
 			}
-            console.log("[SERVER][MOVE] Client pos BEFORE emit: x:"+clientData.position.x+",y:"+clientData.position.y+",z"+clientData.position.z+"!");
+            //console.log("[SERVER][MOVE] Client pos BEFORE emit: x:"+clientData.position.x+",y:"+clientData.position.y+",z"+clientData.position.z+"!");
 			socket.emit("MOVE",clientData);
 			socket.broadcast.emit("MOVE_OTHERS",clientData);
 		}
