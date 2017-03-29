@@ -217,7 +217,7 @@ function SpawnPlayerName(spawnedPlayer,name)
 {
     spawnedPlayer.nameLabel = makeTextSprite(name,{ fontsize: 64, fontface: "Georgia" } );
     spawnedPlayer.nameLabel.position.set(spawnedPlayer.position.x , spawnedPlayer.position.y , spawnedPlayer.position.z );
-    sceneOrtho.add( spawnedPlayer.nameLabel );
+    scene.add( spawnedPlayer.nameLabel );
 }
 //****************************************************************************************************** GRID
 //************************* VARIABLES
