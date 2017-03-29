@@ -110,7 +110,7 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
-        if( player && socket)
+        if( player && socket )
         {
              var input = {x: 0, y:0, z:0};
 
@@ -141,7 +141,7 @@ function handleInput()
         }
         else
         {
-            console.log("player is undefined...");
+            console.log("thisUser is undefined...");
         }
     }
 }
@@ -562,6 +562,11 @@ socket.on('connect', function(data)
     // Respond with a message including this clients' id sent from the server
     socket.emit('USER_CONNECT' );  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT USER_CONNECT >>    >>    >>    >>
     console.log("attempting connection");
+});
+
+socket.on('ConnectCallBack', function(data)
+{
+    console.log("Connected, received Server Answer!");
 });
 
 socket.on('OtherUserPlay', function(data)

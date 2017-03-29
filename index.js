@@ -26,7 +26,7 @@ io.on("connection", function(socket)
 	socket.on("USER_CONNECT",function()
 	{
 		console.log("User connected");
-		//socket.emit("USER_CONNECTED",currentUser);
+		socket.emit("ConnectCallBack");
 	 });
 
 	socket.on("PLAY", function( data )
