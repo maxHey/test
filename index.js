@@ -78,8 +78,8 @@ io.on("connection", function(socket)
 	socket.on("disconnect", function()
 	{
 		console.log("a user disconnected!");
-		socket.broadcast.emit("USER_DISCONNECTED", currentUser );
-
+		//socket.broadcast.emit("USER_DISCONNECTED", currentUser );
+		/*
 		for( var i = 0 ; i < clients.length ; i++ )
 		{
 			if( clients[i].name === currentUser.name)
@@ -88,7 +88,8 @@ io.on("connection", function(socket)
 				clients.splice(i,1);
 				//console.log("User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
 			}
-		};
+		}
+		*/
 	});
 
 	function mainLoop()
