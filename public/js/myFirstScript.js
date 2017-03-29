@@ -110,7 +110,7 @@ function handleInput()
     {
         keyboard.update();
         var moveDistance = 100 * clock.getDelta();
-        if( player )
+        if( player && socket)
         {
              var input = {x: 0, y:0, z:0};
 
