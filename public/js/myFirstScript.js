@@ -82,14 +82,14 @@ function handleInput()
 
             if ( keyboard.pressed("W") || keyboard.down("up"))
             {
-                input.z = 1;
+                input.z = -1;
                 //player.mesh.translateZ( -moveDistance );
             }
             if ( keyboard.pressed("S") || keyboard.down("down") )
             {
 
                 //player.mesh.translateZ( moveDistance );
-                input.z = -1;
+                input.z = 1;
             }
 
             if ( keyboard.pressed("D") || keyboard.down("right") )
@@ -103,7 +103,7 @@ function handleInput()
                 input.x = -1;
             }
             thisUser.input = input;
-            socket.emit("MOVE",input);   
+            socket.emit("MOVE",input);     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT MOVE >>    >>    >>    >>
         }
         else
         {
@@ -398,7 +398,7 @@ function AttemptConnection(username)
 {
     thisUser.name = username; // "" 
     //
-    socket.emit("PLAY", thisUser.name);
+    socket.emit("PLAY", thisUser.name); //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT PLAY >    >>    >>    >>
 }
 
 socket.on('connect', function(data)
@@ -407,7 +407,7 @@ socket.on('connect', function(data)
     thisUser.position = {x: 0, y:0, z:0};
     thisUser.input = {x: 0, y:0, z:0};
     // Respond with a message including this clients' id sent from the server
-    socket.emit('USER_CONNECT', thisUser );
+    socket.emit('USER_CONNECT', thisUser );  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SOCKET EMIT USER_CONNECT >>    >>    >>    >>
 
     console.log("attempt connection");
 });
