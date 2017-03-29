@@ -637,6 +637,7 @@ socket.on("MOVE_OTHERS",function(data)
             otherplayers[data.id].position = data.position;
             //
             otherplayers[data.id].mesh.position.set( data.position.x , data.position.y , data.position.z );
+            otherplayers[data.id].nameLabel.position.set( data.position.x - player.position.x , data.position.y , data.position.z - player.position.z );
             //
             /*
             otherplayers[data.id].mesh.position.x = data.x;
