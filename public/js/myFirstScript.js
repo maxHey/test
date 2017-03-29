@@ -52,6 +52,7 @@ function render()
     }
     var timer = 0.0001 * Date.now();
     renderer.autoClear = false;
+
     renderer.clear();
     renderer.render( scene, camera );
     renderer.clearDepth();
@@ -266,10 +267,11 @@ function MoveCamera()
     }
     else
     {
-        if( player ) console.log("player not initialized");
-        if( player.position ) console.log("player.position not initialized");
-        //camera.position.set( camOffset.x , camOffset.y , camOffset.z );
-        //camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+        //if( player ) console.log("player not initialized");
+        //if( player.position ) console.log("player.position not initialized");
+
+        camera.position.set( camOffset.x , camOffset.y , camOffset.z );
+        camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
         //cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
         //cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
