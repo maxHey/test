@@ -262,16 +262,16 @@ function MoveCamera()
         camera.position.set( x , y , z );
         camera.lookAt( player.position );
 
-        cameraOrtho.position.set( x , y , z );
-        cameraOrtho.lookAt( player.position );
+        //cameraOrtho.position.set( x , y , z );
+        //cameraOrtho.lookAt( player.position );
     }
     else
     {
         camera.position.set( camOffset.x , camOffset.y , camOffset.z );
         camera.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
 
-        cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
-        cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
+        //cameraOrtho.position.set( camOffset.x , camOffset.y , camOffset.z );
+        //cameraOrtho.lookAt( new THREE.Vector3( 0 , 0 , 0 ) );
     }
 }
 
