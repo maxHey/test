@@ -10,12 +10,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var clients = [];
 
-var version = "27-03-2017-0000001";
+var version = "27-03-2017-0000002";
 
 io.on("connection", function(socket)
 {
 	var currentUser;
-	var playerspeed = 4.0;
+	var playerspeed = 10.0;
 	var deltatime = 0.03
 
 	var time;
@@ -76,7 +76,8 @@ io.on("connection", function(socket)
 			var newPos = {x: newX, y:newY, z:newZ};
 			//console.log("[DEBUG "+debugIndex+"][4]"+currentUser.name+" newPos: "+newPos);debugIndex++;
 			currentUser.position = newPos;
-			console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
+			//
+			//console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
 	});
 
 	socket.on("disconnect", function()

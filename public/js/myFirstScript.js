@@ -427,7 +427,9 @@ socket.on("MOVE",function(data){
     //
     player.position = new THREE.Vector3( data.x , data.y , data.z );
     player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-    //player.mesh.translateX( data.x );
+    player.mesh.translateX( player.mesh.position.x - player.mesh.position.x );
+    player.mesh.translateY( player.mesh.position.y - player.mesh.position.y );
+    player.mesh.translateZ( player.mesh.position.z - player.mesh.position.z );
     //player.mesh.translateY( data.y );
     //player.mesh.translateZ( data.z );
     //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
