@@ -46,6 +46,8 @@ io.on("connection", function(socket)
 
 	socket.on("MOVE", function( data ) 
 	{
+		if( currentUser && currentUser.position )
+		{
 			//console.log("[DEBUG][0]"+currentUser.name+" currentUser.position: "+currentUser.position);
 			//console.log("[DEBUG][1]"+currentUser.name+" data.movdir: "+data.movdir);
 			var pos = currentUser.position;
@@ -71,6 +73,7 @@ io.on("connection", function(socket)
 			currentUser.position = newPos;
 			//
 			//console.log("[MOVE]"+currentUser.name+" to: x:"+currentUser.position.x+",y:"+currentUser.position.y+",z"+currentUser.position.z+"!");
+		}
 	});
 
 	socket.on("disconnect", function()
