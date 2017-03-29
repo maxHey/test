@@ -630,14 +630,14 @@ socket.on("MOVE",function(data)
 socket.on("MOVE_OTHERS",function(data)
 {
     //console.log("[MOVE_OTHERS] Move command from server!");
-    if( otherplayers )
+    if( otherplayers)
     {
         if( otherplayers[data.id] )
         {
             otherplayers[data.id].position = data.position;
             //
             otherplayers[data.id].mesh.position.set( data.position.x , data.position.y , data.position.z );
-            otherplayers[data.id].nameLabel.position.set( data.position.x - player.position.x , data.position.y , data.position.z - player.position.z );
+            otherplayers[data.id].nameLabel.position.set( data.position.x , data.position.y , data.position.z );
             //
             /*
             otherplayers[data.id].mesh.position.x = data.x;
