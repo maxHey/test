@@ -160,7 +160,7 @@ function SpawnThisPlayer(data)
         position: data.position, 
         input: data.input 
     }
-    SpawnPlayer(name,position,false);
+    SpawnPlayer(playerServerData.name,playerServerData.position,false);
 }
 
 function SpawnOtherPlayer(data)
@@ -171,7 +171,7 @@ function SpawnOtherPlayer(data)
         position: data.position, 
         input: data.input 
     }
-    SpawnPlayer(name,position,true);
+    SpawnPlayer(playerServerData.name,playerServerData.position,true);
 }
 
 // >> DEPENDENCIES: geometry, materials , SpawnPlayerName
