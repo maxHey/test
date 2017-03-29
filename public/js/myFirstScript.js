@@ -619,7 +619,7 @@ socket.on("MOVE",function(data)
             player.mesh.position.y = player.position.y;
             player.mesh.position.z = player.position.z;
             //
-            player.nameLabel.position.set( newPos.x , newPos.y , newPos.z );
+            player.nameLabel.position.set( player.position.x , player.position.y , player.position.z );
         }
     }
     else
