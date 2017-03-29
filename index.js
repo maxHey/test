@@ -81,14 +81,20 @@ io.on("connection", function(socket)
 	{
 		//console.log("DISCONNECT!");
 		//socket.broadcast.emit("USER_DISCONNECTED", currentUser );
-		
-		for( var i = 0 ; i < clients.length ; i++ )
+		if( clients )
 		{
-			if( clients[i].name === currentUser.name)
+			for( var i = 0 ; i < clients.length ; i++ )
 			{
-				var clientName = clients[i].name;
-				clients.splice(i,1);
-				console.log("[DISCONNECT] User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
+
+				if( clients[i] )
+				{
+					if( clients[i].name === currentUser.name)
+					{
+						var clientName = clients[i].name;
+						clients.splice(i,1);
+						console.log("[DISCONNECT] User: "+clientName+ " disconnected! There are now "+clients.length+" Users online!");
+					}
+				}
 			}
 		}
 		
