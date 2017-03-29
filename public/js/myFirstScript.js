@@ -542,6 +542,11 @@ function removeEntityByID(id)
     scene.remove( selectedObject );
     //animate();
 }
+
+function lerp (a, b, f) 
+{
+    return (a + (f * (b - a)));
+}
 //***************************************************************************************************************************** EVENTS
 //************************* OnWindowResize
 // >> DEPENDENCIES: camera, renderer, window
@@ -602,13 +607,14 @@ socket.on("MOVE",function(data)
     {
         if( data.id == player.id )
         {
-            player.position.x = data.position.x;
-            player.position.y = data.position.y;
-            player.position.z = data.position.z;
+            var newPos = { x: data.position.x , y: data.position.y, z: data.position.z };
+            player.position.x = lerp( player.position.x , newPos.x , 0.1 );
+            player.position.y = lerp( player.position.y , newPos.y , 0.1 );
+            player.position.z = lerp( player.position.z , newPos.z , 0.1 );
             //player.mesh.position = new THREE.Vector3( data.x , data.y , data.z );
-            player.mesh.position.x = data.position.x;
-            player.mesh.position.y = data.position.y;
-            player.mesh.position.z = data.position.z;
+            player.mesh.position.x = player.position.x;
+            player.mesh.position.y = player.position.y;
+            player.mesh.position.z = player.position.z;
         }
     }
     else
