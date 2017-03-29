@@ -664,8 +664,8 @@ socket.on('USER_DISCONNECTED', function(id)
            //REMOVE 
            scene.remove( otherplayers[id].mesh );
            scene.remove( otherplayers[id].nameLabel );
-           removeEntityByID(id);
-           delete otherplayers[id];
+           //removeEntityByID(id);
+           //delete otherplayers[id];
         }
     }
 });
